@@ -7,6 +7,6 @@ Allow: /
 # Sitemap
 Sitemap: https://factura.spun.es/sitemap-index.xml
 
-# Bloquear páginas de prueba/staging si las hubiera
+# Bloquear páginas de prueba
 Disallow: /draft/
 Disallow: /test/

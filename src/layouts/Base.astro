@@ -2,11 +2,9 @@
 interface Props {
   title: string;
   description: string;
-  ogImage?: string;
-  noindex?: boolean;
 }
 
-const { title, description, ogImage = '/images/og-default.png', noindex = false } = Astro.props;
+const { title, description } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -19,49 +17,64 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta name="description" content={description}>
   <link rel="canonical" href={canonicalURL}>
   
-  {noindex && <meta name="robots" content="noindex, follow">}
-  
-  <!-- Open Graph -->
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
   <meta property="og:type" content="website">
   <meta property="og:url" content={canonicalURL}>
-  <meta property="og:image" content={new URL(ogImage, Astro.site)}>
-  <meta property="og:locale" content="es_ES">
-  <meta property="og:site_name" content="SPUN Factura">
+  <meta property="og:image" content={new URL('/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png', Astro.site)}>
   
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content={title}>
-  <meta name="twitter:description" content={description}>
-  <meta name="twitter:image" content={new URL(ogImage, Astro.site)}>
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/images/favicon.png">
-  
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Styles -->
-  <style is:global>
-    @import '../styles/global.css';
+  <style>
+    :root {
+      --color-primary: #34CED6;
+      --color-primary-dark: #2BB5BD;
+      --color-primary-light: #9EE8EC;
+      --color-bg: #FFFFFF;
+      --color-bg-alt: #F8FAFB;
+      --color-bg-section: #F0FCFD;
+      --color-text: #1E293B;
+      --color-text-muted: #64748B;
+      --color-border: #E2E8F0;
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-main); background: var(--color-bg); color: var(--color-text); line-height: 1.7; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .container-narrow { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+    
+    header { padding: 14px 0; position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.97); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--color-border); }
+    .header-inner { display: flex; justify-content: space-between; align-items: center; }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo img { height: 32px; width: auto; }
+    .logo-text { font-weight: 500; font-size: 0.875rem; color: var(--color-text-muted); }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { font-size: 0.875rem; color: var(--color-text-muted); text-decoration: none; }
+    .nav-links a:hover { color: var(--color-primary-dark); }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--color-primary); color: white; border-radius: 8px; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+    .btn-primary:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+    
+    footer { padding: 28px 0; border-top: 1px solid var(--color-border); text-align: center; }
+    .footer-text { font-size: 0.8125rem; color: var(--color-text-muted); margin-bottom: 8px; }
+    .footer-links { margin-top: 8px; }
+    .footer-links a { margin: 0 10px; font-size: 0.75rem; color: var(--color-primary-dark); text-decoration: none; }
+    
+    a { color: var(--color-primary-dark); }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <div class="header-inner">
-        <a href="/" class="logo">
-          <img src="/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" alt="SPUN">
-          <span class="logo-text">SPUN Factura</span>
-        </a>
-        <nav class="nav-links">
-          <a href="/blog">Blog</a>
-          <a href="/#form" class="btn btn-primary btn-sm">Registrarme</a>
-        </nav>
-      </div>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">
+        <img src="/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" alt="SPUN">
+        <span class="logo-text">Factura</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/blog">Blog</a>
+        <a href="/#reservar" class="btn-primary">Reservar plaza</a>
+      </nav>
     </div>
   </header>
 
@@ -69,15 +82,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <slot />
   </main>
 
-  <footer class="site-footer">
+  <footer>
     <div class="container">
-      <p class="footer-text">
-        SPUN Factura · Homedome Ibérica S.L. · CIF B88637574 · Madrid
-      </p>
-      <p class="footer-text">
-        <a href="mailto:hola@spun.es">hola@spun.es</a>
-      </p>
-      <p class="footer-text" style="font-size: 0.7rem; margin-top: 8px;">
+      <p class="footer-text">SPUN Factura · Homedome Ibérica S.L. · CIF B88637574 · Madrid</p>
+      <p class="footer-text" style="font-size: 0.7rem;">
         Información sobre Verifactu basada en el 
         <a href="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2023-24840" target="_blank" rel="noopener">RD 1007/2023</a> 
         y comunicaciones de la 
