@@ -1,0 +1,94 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const { title, description, ogImage = '/images/og-default.png', noindex = false } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonicalURL}>
+  
+  {noindex && <meta name="robots" content="noindex, follow">}
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonicalURL}>
+  <meta property="og:image" content={new URL(ogImage, Astro.site)}>
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="SPUN Factura">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={new URL(ogImage, Astro.site)}>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <style is:global>
+    @import '../styles/global.css';
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <img src="/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" alt="SPUN">
+          <span class="logo-text">SPUN Factura</span>
+        </a>
+        <nav class="nav-links">
+          <a href="/blog">Blog</a>
+          <a href="/#form" class="btn btn-primary btn-sm">Registrarme</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="footer-text">
+        SPUN Factura · Homedome Ibérica S.L. · CIF B88637574 · Madrid
+      </p>
+      <p class="footer-text">
+        <a href="mailto:hola@spun.es">hola@spun.es</a>
+      </p>
+      <p class="footer-text" style="font-size: 0.7rem; margin-top: 8px;">
+        Información sobre Verifactu basada en el 
+        <a href="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2023-24840" target="_blank" rel="noopener">RD 1007/2023</a> 
+        y comunicaciones de la 
+        <a href="https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html" target="_blank" rel="noopener">AEAT</a>.
+      </p>
+      <div class="footer-links">
+        <a href="/privacidad">Privacidad</a>
+        <a href="/aviso-legal">Aviso Legal</a>
+        <a href="/cookies">Cookies</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

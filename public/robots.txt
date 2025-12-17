@@ -1,0 +1,12 @@
+# SPUN Factura - Robots.txt
+# https://factura.spun.es/robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://factura.spun.es/sitemap-index.xml
+
+# Bloquear páginas de prueba/staging si las hubiera
+Disallow: /draft/
+Disallow: /test/
