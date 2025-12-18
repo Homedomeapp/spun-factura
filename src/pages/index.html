@@ -5,14 +5,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPUN Factura | Facturación para Construcción y Reformas</title>
     <meta name="description" content="Facturación electrónica para profesionales de construcción y reformas. Diseñado para cumplir Verifactu 2027 (RD 1007/2023). IVA reducido preconfigurado.">
+    <link rel="canonical" href="https://factura.spun.es/">
     
     <!-- Open Graph -->
     <meta property="og:title" content="SPUN Factura | Facturación que entiende tu obra">
-    <meta property="og:description" content="Facturación para construcción y reformas. Preparado para Verifactu 2027 (RD 1007/2023). IVA reducido preconfigurado.">
+    <meta property="og:description" content="Software de facturación para construcción y reformas. Preparado para Verifactu 2027. IVA reducido preconfigurado. Desde 9,99€/mes.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://factura.spun.es/">
-    <meta property="og:image" content="https://factura.spun.es/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png">
-    <link rel="canonical" href="https://factura.spun.es/">
+    <meta property="og:image" content="https://factura.spun.es/images/og-spun-factura.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:site_name" content="SPUN Factura">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SPUN Factura | Facturación que entiende tu obra">
+    <meta name="twitter:description" content="Software de facturación para construcción y reformas. Preparado para Verifactu 2027. Desde 9,99€/mes.">
+    <meta name="twitter:image" content="https://factura.spun.es/images/og-spun-factura.png">
+    
+    <!-- Schema.org: Organization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://spun.es/#organization",
+        "name": "SPUN",
+        "legalName": "Homedome Ibérica S.L.",
+        "url": "https://spun.es",
+        "logo": "https://factura.spun.es/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png",
+        "email": "hola@spun.es",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Madrid",
+            "addressCountry": "ES"
+        },
+        "taxID": "B88637574",
+        "sameAs": []
+    }
+    </script>
+    
+    <!-- Schema.org: WebSite -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://factura.spun.es/#website",
+        "url": "https://factura.spun.es",
+        "name": "SPUN Factura",
+        "description": "Software de facturación electrónica para profesionales de construcción y reformas en España",
+        "publisher": {
+            "@id": "https://spun.es/#organization"
+        },
+        "inLanguage": "es-ES"
+    }
+    </script>
+    
+    <!-- Schema.org: SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "SPUN Factura",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, iOS, Android",
+        "description": "Software de facturación electrónica diseñado para profesionales de construcción y reformas. Cumple con los requisitos del RD 1007/2023 (Verifactu). IVA reducido preconfigurado.",
+        "offers": {
+            "@type": "Offer",
+            "price": "9.99",
+            "priceCurrency": "EUR",
+            "priceValidUntil": "2026-12-31",
+            "availability": "https://schema.org/PreOrder"
+        },
+        "publisher": {
+            "@id": "https://spun.es/#organization"
+        },
+        "featureList": [
+            "Cumplimiento Verifactu (RD 1007/2023)",
+            "IVA reducido 10% preconfigurado",
+            "Facturación desde móvil",
+            "Presupuestos con partidas de obra",
+            "Adjuntar fotos y planos",
+            "Dashboard por proyecto"
+        ],
+        "screenshot": "https://factura.spun.es/images/og-spun-factura.png"
+    }
+    </script>
+    
+    <!-- Schema.org: FAQPage -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "¿Tengo que dejar de usar a mi gestoría?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No. Tu gestoría puede seguir presentando impuestos como siempre. SPUN Factura se encarga de que tus facturas salgan bien y cumplan con Hacienda. Son cosas compatibles."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "¿Cuándo pago los 9,99€/mes?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Cuando el producto esté listo y tú lo estés usando. Ahora solo reservas el precio. Si no te convence cuando lo veas, no pagas nada."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "¿Qué pasa si Verifactu cambia algo?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Actualizamos nosotros la integración. Tú no tienes que cambiar de programa cada vez que Hacienda invente algo nuevo."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "¿Ya cumplís con el RD 1007/2023?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Estamos desarrollando SPUN Factura para cumplir los requisitos técnicos del Reglamento Verifactu desde el principio: registro de facturación con hash encadenado, código QR, y capacidad de envío a la AEAT."
+                }
+            }
+        ]
+    }
+    </script>
     
     <!-- Fonts - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1054,6 +1174,7 @@
             </a>
             <nav style="display: flex; align-items: center; gap: 24px;">
                 <a href="/blog" style="font-size: 0.875rem; color: var(--color-text-muted); text-decoration: none;">Blog</a>
+                <a href="/sobre-nosotros" style="font-size: 0.875rem; color: var(--color-text-muted); text-decoration: none;">Sobre nosotros</a>
                 <div class="badge-verifactu">
                     <strong>Preparado para Verifactu 2027</strong>
                     <span>Cumplimiento RD 1007/2023</span>
@@ -1531,6 +1652,7 @@
                 <a href="/privacidad">Política de Privacidad</a>
                 <a href="/aviso-legal">Aviso Legal</a>
                 <a href="/cookies">Cookies</a>
+                <a href="/sobre-nosotros">Sobre nosotros</a>
             </div>
         </div>
     </footer>
