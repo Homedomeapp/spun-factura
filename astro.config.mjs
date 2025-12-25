@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import rehypeSlug from 'rehype-slug';
 
 export default defineConfig({
   site: 'https://factura.spun.es',
@@ -8,29 +9,25 @@ export default defineConfig({
     mdx(),
     sitemap({
       filter: (page) => !page.includes('/draft/'),
-      changefreq: 'weekly',
-      priority: 0.7,
-      serialize(item) {
+      serialize: (item) => {
+        // Prioridades SEO personalizadas
         if (item.url === 'https://factura.spun.es/') {
-          return { ...item, priority: 1.0, changefreq: 'daily' };
-        }
-        if (item.url.includes('/blog/') && !item.url.endsWith('/blog/') && !item.url.endsWith('/blog')) {
-          return { ...item, priority: 0.8, changefreq: 'weekly' };
-        }
-        if (item.url.endsWith('/blog') || item.url.endsWith('/blog/')) {
-          return { ...item, priority: 0.9, changefreq: 'daily' };
-        }
-        if (item.url.includes('/privacidad') || item.url.includes('/aviso-legal') || item.url.includes('/cookies')) {
-          return { ...item, priority: 0.3, changefreq: 'monthly' };
+          item.priority = 1.0;
+        } else if (item.url === 'https://factura.spun.es/blog') {
+          item.priority = 0.9;
+        } else if (item.url.includes('/blog/')) {
+          item.priority = 0.8;
+        } else if (item.url.includes('/privacidad') || item.url.includes('/aviso-legal') || item.url.includes('/cookies')) {
+          item.priority = 0.3;
         }
         return item;
       }
     })
   ],
   markdown: {
-    shikiConfig: {
-      theme: 'github-light'
-    }
+    rehypePlugins: [
+      rehypeSlug // Genera slugs semánticos para headings
+    ]
   },
   trailingSlash: 'never'
 });
