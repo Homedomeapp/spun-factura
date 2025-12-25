@@ -1,7 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import Base from '../../layouts/Base.astro';
-import '../../styles/blog.css';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const sortedPosts = posts.sort(
@@ -12,29 +10,65 @@ const title = "Blog | SPUN Factura - Guías de Facturación para Construcción";
 const description = "Guías prácticas sobre facturación, Verifactu, IVA y gestión fiscal para profesionales de construcción y reformas.";
 ---
 
-<Base title={title} description={description}>
-  <div class="blog-index">
-    <!-- Header -->
-    <header class="blog-header">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href="https://factura.spun.es/blog">
+  
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://factura.spun.es/blog">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <img src="/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" alt="SPUN" width="32" height="32">
+        <span class="logo-text">Factura</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/blog">Blog</a>
+        <a href="/sobre-nosotros">Sobre nosotros</a>
+        <a href="/#reservar" class="btn-nav">Reservar plaza</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-header">
       <h1>Blog SPUN Factura</h1>
       <p>Guías prácticas sobre facturación, Verifactu, IVA y gestión fiscal para profesionales de construcción y reformas.</p>
-    </header>
+    </div>
 
-    <!-- Posts Grid -->
     <div class="posts-grid">
       {sortedPosts.map((post) => (
         <a href={`/blog/${post.slug}`} class="post-card">
+          {/* IMAGEN DEL POST - CRÍTICO: usa post.data.image */}
           {post.data.image ? (
             <img 
               src={post.data.image} 
               alt={post.data.imageAlt || post.data.title}
               class="post-card-image"
               loading="lazy"
+              width="400"
+              height="225"
             />
           ) : (
-            <div class="post-card-image-placeholder">
-              📄
-            </div>
+            <div class="post-card-placeholder">📄</div>
           )}
           <div class="post-card-content">
             {post.data.category && (
@@ -55,11 +89,230 @@ const description = "Guías prácticas sobre facturación, Verifactu, IVA y gest
       ))}
     </div>
 
-    <!-- CTA Section -->
     <section class="blog-cta">
       <h3>¿Quieres estar preparado para Verifactu?</h3>
       <p>Regístrate y te avisamos cuando SPUN Factura esté disponible.</p>
       <a href="/#reservar" class="btn-primary">Reservar mi plaza →</a>
     </section>
-  </div>
-</Base>
+  </main>
+
+  <footer class="site-footer">
+    <p>SPUN Factura · Homedome Ibérica S.L. · CIF B88637574 · Madrid</p>
+    <div class="footer-links">
+      <a href="/privacidad">Privacidad</a>
+      <a href="/aviso-legal">Aviso Legal</a>
+      <a href="/cookies">Cookies</a>
+    </div>
+  </footer>
+
+  <style>
+    :root {
+      --color-primary: #34CED6;
+      --color-primary-dark: #2BB5BD;
+      --color-primary-light: #9EE8EC;
+      --color-bg: #FFFFFF;
+      --color-bg-alt: #F8FAFB;
+      --color-bg-section: #F0FCFD;
+      --color-text: #1E293B;
+      --color-text-muted: #64748B;
+      --color-border: #E2E8F0;
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: var(--font-main);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+    
+    .site-header {
+      padding: 14px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      border-bottom: 1px solid var(--color-border);
+    }
+    
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo img { height: 32px; width: auto; }
+    .logo-text { font-weight: 500; font-size: 0.875rem; color: var(--color-text-muted); }
+    
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { font-size: 0.875rem; color: var(--color-text-muted); text-decoration: none; }
+    
+    .btn-nav {
+      padding: 10px 20px;
+      background: var(--color-primary);
+      color: white !important;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    
+    main {
+      padding-top: 100px;
+      padding-bottom: 60px;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    
+    .blog-header {
+      text-align: center;
+      padding: 40px 0 50px;
+    }
+    
+    .blog-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    
+    .blog-header p {
+      font-size: 1.125rem;
+      color: var(--color-text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+      margin-bottom: 60px;
+    }
+    
+    .post-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .post-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* IMAGEN EN CARD - CRÍTICO */
+    .post-card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .post-card-placeholder {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    
+    .post-card-content { padding: 24px; }
+    
+    .post-card-category {
+      display: inline-block;
+      background: var(--color-bg-section);
+      color: var(--color-primary-dark);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    
+    .post-card h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+    
+    .post-card p {
+      font-size: 0.9375rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    
+    .post-card-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+    }
+    
+    .blog-cta {
+      background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
+      border-radius: 20px;
+      padding: 50px 40px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .blog-cta h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    
+    .blog-cta p {
+      color: var(--color-text-muted);
+      margin-bottom: 24px;
+    }
+    
+    .btn-primary {
+      display: inline-flex;
+      padding: 14px 28px;
+      background: var(--color-primary);
+      color: white;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    
+    .btn-primary:hover { background: var(--color-primary-dark); }
+    
+    .site-footer {
+      padding: 32px 24px;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+    }
+    
+    .site-footer p { margin-bottom: 8px; }
+    .footer-links a { margin: 0 10px; color: var(--color-primary-dark); text-decoration: none; }
+    
+    @media (max-width: 768px) {
+      .blog-header h1 { font-size: 2rem; }
+      .posts-grid { grid-template-columns: 1fr; }
+      .blog-cta { padding: 40px 24px; }
+    }
+  </style>
+</body>
+</html>
