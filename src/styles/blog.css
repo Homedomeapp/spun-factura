@@ -650,8 +650,9 @@
   }
 }
 /* ===========================================
-   MEJORAS BLOG SPUN FACTURA - VERSIÓN COMPLETA
-   Añadir al final de src/styles/blog.css
+   MEJORAS BLOG - CORREGIDO
+   REEMPLAZA todo lo que está después de la línea 380 en blog.css
+   (elimina la sección "MEJORAS BLOG SPUN FACTURA" anterior)
    =========================================== */
 
 /* -----------------------------------------
@@ -659,105 +660,85 @@
    ----------------------------------------- */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 88px;
-}
-
-.blog-content h2,
-.blog-content h3,
-.blog-content h4,
-[id] {
-  scroll-margin-top: 88px;
+  scroll-padding-top: 100px;
 }
 
 /* -----------------------------------------
    2. TABLAS - Estilo card profesional (P0)
+   Sobrescribe los estilos básicos anteriores
    ----------------------------------------- */
-.blog-content table {
+.article-content table {
   width: 100%;
-  border-collapse: separate;
+  border-collapse: separate !important;
   border-spacing: 0;
-  margin: 2rem 0;
-  font-size: 0.95rem;
+  margin: 32px 0;
+  font-size: 0.9375rem;
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 
               0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-border);
 }
 
-.blog-content thead {
-  background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+.article-content thead {
+  background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
 }
 
-.blog-content th {
+.article-content th {
   padding: 14px 20px;
   text-align: left;
   font-weight: 600;
-  color: #0f766e;
-  border-bottom: 2px solid #14b8a6;
-  font-size: 0.85rem;
+  color: var(--color-primary-dark);
+  border-bottom: 2px solid var(--color-primary);
+  border-right: none;
+  border-left: none;
+  border-top: none;
+  font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  background: transparent;
 }
 
-.blog-content td {
+.article-content td {
   padding: 14px 20px;
-  border-bottom: 1px solid #e2e8f0;
-  color: #334155;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
   vertical-align: middle;
+  background: transparent;
 }
 
-.blog-content tbody tr:last-child td {
+.article-content tbody tr:last-child td {
   border-bottom: none;
 }
 
 /* Zebra rows */
-.blog-content tbody tr:nth-child(even) {
-  background-color: #f8fafc;
+.article-content tbody tr:nth-child(even) {
+  background-color: var(--color-bg-alt);
 }
 
 /* Hover en filas */
-.blog-content tbody tr {
+.article-content tbody tr {
   transition: background-color 0.15s ease;
 }
 
-.blog-content tbody tr:hover {
-  background-color: #f0fdfa;
-}
-
-/* Filas de totales/subtotales */
-.blog-content tbody tr:has(td strong:first-child),
-.blog-content tbody tr:has(td:first-child strong) {
-  background: #f0fdfa;
-  font-weight: 500;
-}
-
-/* Fila final destacada */
-.blog-content tbody tr:last-child:has(strong) td {
-  font-weight: 600;
-  color: #0f766e;
-  background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
-  border-top: 2px solid #14b8a6;
+.article-content tbody tr:hover {
+  background-color: var(--color-bg-section);
 }
 
 /* -----------------------------------------
    3. FIX "Sí / No" en líneas separadas
    ----------------------------------------- */
-.blog-content td:last-child {
+.article-content td:last-child,
+.article-content th:last-child {
   white-space: nowrap;
-}
-
-/* Columnas de estado más anchas */
-.blog-content th:last-child,
-.blog-content td:last-child {
-  min-width: 120px;
+  min-width: 100px;
   text-align: center;
 }
 
-/* Primera columna (requisitos) puede expandirse */
-.blog-content th:first-child,
-.blog-content td:first-child {
+.article-content td:first-child,
+.article-content th:first-child {
   text-align: left;
 }
 
@@ -765,213 +746,177 @@ html {
    4. TABLAS RESPONSIVAS (móvil)
    ----------------------------------------- */
 @media (max-width: 768px) {
-  .blog-content table {
+  .article-content table {
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     font-size: 0.875rem;
+    margin-left: -16px;
+    margin-right: -16px;
+    width: calc(100% + 32px);
+    border-radius: 0;
   }
   
-  .blog-content th,
-  .blog-content td {
+  .article-content th,
+  .article-content td {
     padding: 12px 14px;
   }
-  
-  .blog-content table {
-    min-width: 480px;
-  }
 }
 
 /* -----------------------------------------
-   5. CALLOUTS / ALERTAS (densidad visual)
+   5. FILAS DESTACADAS (totales, subtotales)
    ----------------------------------------- */
-.blog-content blockquote {
-  margin: 2rem 0;
-  padding: 1.25rem 1.5rem;
-  background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
-  border-left: 4px solid #eab308;
-  border-radius: 0 12px 12px 0;
-  font-style: normal;
+.article-content tr td strong,
+.article-content tr th strong {
+  color: var(--color-primary-dark);
 }
 
-.blog-content blockquote p {
-  margin: 0;
-  color: #713f12;
-}
-
-/* Callout de info (para "Importante:", "Ejemplo:") */
-.blog-content p:has(strong:first-child) {
-  padding: 1rem 1.25rem;
-  background: #f8fafc;
-  border-left: 3px solid #14b8a6;
-  border-radius: 0 8px 8px 0;
-  margin: 1.5rem 0;
+/* Cuando la primera celda tiene strong = fila de total */
+.article-content tbody tr td:first-child strong {
+  font-weight: 700;
 }
 
 /* -----------------------------------------
-   6. CASOS FRECUENTES - Como mini-cards
+   6. RESUMEN RÁPIDO - Primera párrafo destacado
    ----------------------------------------- */
-.blog-content h3 + p {
-  margin-top: 0.75rem;
-}
-
-/* Destacar IVA 10% / IVA 21% */
-.blog-content p strong:first-child {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.9em;
-}
-
-/* -----------------------------------------
-   7. MEJOR ESPACIADO ENTRE SECCIONES
-   ----------------------------------------- */
-.blog-content h2 {
-  margin-top: 3.5rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #e2e8f0;
-}
-
-.blog-content h2:first-of-type {
-  margin-top: 2rem;
-}
-
-.blog-content h3 {
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-  color: #1e293b;
-}
-
-.blog-content p {
-  margin-bottom: 1.25rem;
-  line-height: 1.8;
-}
-
-.blog-content ul,
-.blog-content ol {
-  margin: 1.5rem 0;
-  padding-left: 1.5rem;
-}
-
-.blog-content li {
-  margin-bottom: 0.75rem;
-  line-height: 1.7;
-}
-
-/* -----------------------------------------
-   8. RESUMEN RÁPIDO (highlight box)
-   ----------------------------------------- */
-.blog-content > p:first-of-type {
-  font-size: 1.1rem;
+.article-content > p:first-of-type {
+  font-size: 1.0625rem;
   line-height: 1.75;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%);
-  border: 1px solid #99f6e4;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
+  border: 1px solid var(--color-primary-light);
   border-radius: 12px;
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
 }
 
-.blog-content > p:first-of-type strong {
-  color: #0f766e;
+.article-content > p:first-of-type strong {
+  color: var(--color-primary-dark);
 }
 
 /* -----------------------------------------
-   9. CTA BOX (SPUN Factura)
+   7. SEGUNDO PÁRRAFO "En 30 segundos"
    ----------------------------------------- */
-.blog-content h2:has(+ p a[href="/"]) + p,
-.blog-content p:has(a[href="/"]:only-child) {
-  text-align: center;
+.article-content > p:nth-of-type(2) {
+  background: var(--color-bg-alt);
+  border-left: 4px solid var(--color-primary);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 32px;
 }
 
-.blog-content a[href="/"] {
-  display: inline-block;
-  padding: 12px 28px;
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-  color: white !important;
-  text-decoration: none;
+.article-content > p:nth-of-type(2) strong {
+  color: var(--color-primary-dark);
+}
+
+/* -----------------------------------------
+   8. MEJOR ESPACIADO SECCIONES
+   ----------------------------------------- */
+.article-content h2 {
+  margin-top: 56px;
+  margin-bottom: 20px;
+  padding-top: 32px;
+  padding-bottom: 12px;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.article-content h2:first-of-type,
+.article-content h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* -----------------------------------------
+   9. CALLOUTS para "Ejemplo:", "Importante:", "Recomendación:"
+   ----------------------------------------- */
+.article-content p strong:only-child,
+.article-content p > strong:first-child {
+  color: var(--color-primary-dark);
+}
+
+/* -----------------------------------------
+   10. LISTA DESPUÉS DEL H2 "Fuentes"
+   ----------------------------------------- */
+.article-content h2 + ul:last-of-type,
+.sources ul {
+  background: var(--color-bg-alt);
+  padding: 20px 24px 20px 40px;
   border-radius: 8px;
+  border: 1px solid var(--color-border);
+  font-size: 0.9375rem;
+}
+
+/* -----------------------------------------
+   11. DISCLAIMER FINAL (después de hr)
+   ----------------------------------------- */
+.article-content hr + p:last-of-type,
+.article-content > p:last-of-type em {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  display: block;
+  padding: 16px;
+  background: var(--color-bg-alt);
+  border-radius: 8px;
+  margin-top: 24px;
+}
+
+/* -----------------------------------------
+   12. CTA BUTTON STYLING
+   ----------------------------------------- */
+.article-content p > a[href="/"]:only-child,
+.article-content a[href="/"][class*="btn"],
+.article-content p > strong > a[href="/"] {
+  display: inline-block;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white !important;
+  text-decoration: none !important;
+  border-radius: 10px;
   font-weight: 600;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
+  box-shadow: 0 4px 12px rgba(52, 206, 214, 0.3);
 }
 
-.blog-content a[href="/"]:hover {
+.article-content p > a[href="/"]:only-child:hover,
+.article-content a[href="/"][class*="btn"]:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
+  box-shadow: 0 6px 20px rgba(52, 206, 214, 0.4);
 }
 
-/* -----------------------------------------
-   10. FUENTES (footer del artículo)
-   ----------------------------------------- */
-.blog-content h2:contains("Fuentes") + ul,
-.blog-content ul:last-of-type {
-  font-size: 0.9rem;
-  color: #64748b;
-  background: #f8fafc;
-  padding: 1.25rem 1.5rem 1.25rem 2.5rem;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-}
-
-/* -----------------------------------------
-   11. DISCLAIMER FINAL
-   ----------------------------------------- */
-.blog-content hr + p:last-child {
-  font-size: 0.85rem;
-  color: #64748b;
-  font-style: italic;
+/* Centrar el párrafo que contiene solo el CTA */
+.article-content p:has(> a[href="/"]:only-child) {
   text-align: center;
-  padding: 1rem;
-  background: #f8fafc;
-  border-radius: 8px;
-  margin-top: 2rem;
+  margin: 40px 0;
 }
 
 /* -----------------------------------------
-   12. TOC MEJORADO
+   13. FAQ SECTION (si se renderiza desde layout)
+   Solo estilos, no duplicar contenido
    ----------------------------------------- */
-.toc,
-[class*="toc"] {
-  background: #f8fafb;
-  border: 1px solid #e2e8f0;
+.faq-section {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+}
+
+.faq-item {
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  background: var(--color-bg-alt);
   border-radius: 12px;
-  padding: 1.5rem 2rem;
-  margin: 2rem 0;
+  border: 1px solid var(--color-border);
 }
 
-.toc ul,
-[class*="toc"] ul {
-  list-style: none;
-  padding: 0;
+.faq-item h3,
+.faq-item strong {
+  color: var(--color-text);
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.faq-item p {
+  color: var(--color-text-muted);
   margin: 0;
-  counter-reset: toc-counter;
-}
-
-.toc li,
-[class*="toc"] li {
-  margin-bottom: 0.5rem;
-  counter-increment: toc-counter;
-}
-
-.toc a,
-[class*="toc"] a {
-  color: #475569;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  display: block;
-  padding: 6px 0;
-}
-
-.toc a:hover,
-[class*="toc"] a:hover {
-  color: #14b8a6;
-}
-
-.toc a::before,
-[class*="toc"] a::before {
-  content: counter(toc-counter) ". ";
-  color: #14b8a6;
-  font-weight: 600;
-  margin-right: 4px;
 }
