@@ -59,7 +59,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CONTENT_DATA: ${{ steps.parse.outputs.data }}
-        run: node .github/scripts/generate-content.cjs
+        run: node .github/scripts/generate-content-v2.cjs
       - name: Delete content
         if: contains(steps.parse.outputs.action, 'delete')
         run: rm -f "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
