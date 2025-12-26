@@ -59,16 +59,16 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CONTENT_DATA: ${{ steps.parse.outputs.data }}
-        run: node .github/scripts/generate-content.js
+        run: node .github/scripts/generate-content.cjs
       - name: Delete content
         if: contains(steps.parse.outputs.action, 'delete')
         run: rm -f "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
       - name: Validate
         if: "!contains(steps.parse.outputs.action, 'delete')"
-        run: node .github/scripts/validate-frontmatter.js "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
+        run: node .github/scripts/validate-frontmatter.cjs "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
       - name: Check links
         if: "!contains(steps.parse.outputs.action, 'delete')"
-        run: node .github/scripts/check-links.js "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
+        run: node .github/scripts/check-links.cjs "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
       - name: Build test
         run: npm run build
       - name: Commit and push
