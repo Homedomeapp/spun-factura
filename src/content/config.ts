@@ -10,10 +10,14 @@ const blog = defineCollection({
     category: z.string().optional(),
     tags: z.array(z.string()).optional(),
     readingTime: z.number().optional(),
-    // CRÍTICO: Estos campos DEBEN estar en el schema para que Astro los pase
     image: z.string().optional(),
     imageAlt: z.string().optional(),
     draft: z.boolean().default(false),
+    // FAQ para generar FAQPage schema
+    faq: z.array(z.object({
+      q: z.string(),
+      a: z.string(),
+    })).optional(),
   }),
 });
 
