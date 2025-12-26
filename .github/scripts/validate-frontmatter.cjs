@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const RULES = {
   title: { required: true, minLength: 20, maxLength: 70 },
-  description: { required: true, minLength: 150, maxLength: 160 },
+  description: { required: true, minLength: 140, maxLength: 170 },
   publishedDate: { required: true, pattern: /^\d{4}-\d{2}-\d{2}$/ },
   category: { required: true },
   tags: { required: true, isArray: true, minItems: 2 },
