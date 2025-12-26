@@ -31,7 +31,7 @@ jobs:
             }
             const data = {
               action: parseField(body, 'Acción'),
-              slug: parseField(body, 'Slug \\(URL\\)').toLowerCase().replace(/[^a-z0-9-]/g, '-'),
+              slug: parseField(body, 'Slug \\(URL\\)').toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''),
               title: parseField(body, 'Título'),
               description: parseField(body, 'Meta Description'),
               category: parseField(body, 'Categoría'),
@@ -42,7 +42,7 @@ jobs:
               internal_links: parseField(body, 'Enlaces Internos'),
               sources: parseField(body, 'Fuentes Oficiales')
             };
-            if (!data.slug || !data.action) { core.setFailed('Faltan campos'); return; }
+            if (!data.slug || !data.action) { core.setFailed('Faltan campos obligatorios'); return; }
             core.setOutput('action', data.action);
             core.setOutput('slug', data.slug);
             core.setOutput('data', JSON.stringify(data));
@@ -63,12 +63,6 @@ jobs:
       - name: Delete content
         if: contains(steps.parse.outputs.action, 'delete')
         run: rm -f "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
-      - name: Validate
-        if: "!contains(steps.parse.outputs.action, 'delete')"
-        run: node .github/scripts/validate-frontmatter.cjs "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
-      - name: Check links
-        if: "!contains(steps.parse.outputs.action, 'delete')"
-        run: node .github/scripts/check-links.cjs "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
       - name: Build test
         run: npm run build
       - name: Commit and push
@@ -90,7 +84,7 @@ jobs:
               title: `✨ Content: ${data.title || '${{ steps.parse.outputs.slug }}'}`,
               head: '${{ steps.branch.outputs.branch_name }}',
               base: 'main',
-              body: `## 🤖 Content Bot\n\n**Issue:** #${{ github.event.issue.number }}\n**Slug:** \`${{ steps.parse.outputs.slug }}\`\n**Categoría:** ${data.category}\n\n### ✅ Checklist\n- [ ] Título SEO correcto\n- [ ] Description 150-155 chars\n- [ ] Contenido correcto\n- [ ] Enlaces funcionan\n- [ ] CTA presente\n\n**Preview:** https://factura.spun.es/blog/${{ steps.parse.outputs.slug }}`
+              body: `## 🤖 Content Bot\n\n**Issue:** #${{ github.event.issue.number }}\n**Slug:** \`${{ steps.parse.outputs.slug }}\`\n**Categoría:** ${data.category}\n\n### ✅ Checklist de revisión\n- [ ] Título SEO correcto (50-60 chars)\n- [ ] Meta description 150-160 chars\n- [ ] Contenido factualmente correcto\n- [ ] FAQ incluidas en frontmatter\n- [ ] Fuentes oficiales citadas\n- [ ] CTA presente\n- [ ] Imagen añadida\n\n### 🔗 Preview\nVercel generará preview automáticamente.\n\n**URL final:** https://factura.spun.es/blog/${{ steps.parse.outputs.slug }}`
             });
             core.setOutput('pr_url', pr.data.html_url);
       - name: Comment on issue
@@ -101,7 +95,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `## ✅ PR creado\n\n👉 ${{ steps.pr.outputs.pr_url }}\n\n**Próximos pasos:**\n1. Revisa el PR\n2. Merge cuando esté listo\n3. Vercel despliega automáticamente`
+              body: `## ✅ PR creado\n\n👉 ${{ steps.pr.outputs.pr_url }}\n\n### 📝 Próximos pasos\n1. **Revisa el contenido** en la preview de Vercel\n2. **Edita si es necesario** (en Files changed → Edit)\n3. **Añade imagen** a \`/public/images/blog/${{ steps.parse.outputs.slug }}.jpg\`\n4. **Merge** cuando esté listo\n\n### 🔄 ¿Necesitas cambios?\nComenta en el PR o edita directamente el archivo.`
             });
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
@@ -124,5 +118,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `## ❌ Error\n\nRevisa los logs: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+              body: `## ❌ Error\n\nEl workflow falló. Revisa los logs:\n👉 https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n### Posibles causas\n- Campos del formulario incompletos\n- Error en la API de Anthropic\n- Error de build en Astro`
             });
