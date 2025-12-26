@@ -1,0 +1,42 @@
+name: 🔒 Close Issue on PR Merge
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  close-linked-issue:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      
+    steps:
+      - name: Find and close linked issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prBody = context.payload.pull_request.body || '';
+            const issueMatch = prBody.match(/#(\d+)/);
+            
+            if (!issueMatch) {
+              console.log('No issue linked');
+              return;
+            }
+            
+            const issueNumber = parseInt(issueMatch[1]);
+            console.log(`Closing issue #${issueNumber}`);
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: `## ✅ Publicado\n\nPR #${context.payload.pull_request.number} mergeado.\n\n🌐 https://factura.spun.es`
+            });
+            
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              state: 'closed'
+            });
