@@ -649,3 +649,312 @@
     font-size: 0.75rem;
   }
 }
+/* ===========================================
+   MEJORAS BLOG - SPUN FACTURA
+   Añadir a src/styles/blog.css o global.css
+   =========================================== */
+
+/* -----------------------------------------
+   1. SCROLL OFFSET - Header fijo
+   El scroll debe tener en cuenta el header
+   ----------------------------------------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px; /* Ajustar según altura del header */
+}
+
+/* Alternativa: aplicar a todos los elementos con id */
+[id] {
+  scroll-margin-top: 100px;
+}
+
+/* Específico para headings del contenido */
+.blog-content h2,
+.blog-content h3,
+.blog-content h4 {
+  scroll-margin-top: 100px;
+}
+
+/* -----------------------------------------
+   2. TABLAS - Diseño profesional
+   Similar al estilo de las cards del index
+   ----------------------------------------- */
+.blog-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 2rem 0;
+  font-size: 0.95rem;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 
+              0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.blog-content thead {
+  background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%);
+}
+
+.blog-content th {
+  padding: 14px 18px;
+  text-align: left;
+  font-weight: 600;
+  color: #0f766e;
+  border-bottom: 2px solid #14b8a6;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.blog-content td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+  vertical-align: top;
+}
+
+/* Última fila sin borde */
+.blog-content tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Hover en filas */
+.blog-content tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.blog-content tbody tr:hover {
+  background-color: #f8fafb;
+}
+
+/* Filas alternas (opcional - descomentar si se prefiere) */
+/*
+.blog-content tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+*/
+
+/* Columna de totales o destacada */
+.blog-content td strong,
+.blog-content th strong {
+  color: #0f766e;
+}
+
+/* Evitar que textos cortos se partan */
+.blog-content td:last-child {
+  white-space: nowrap;
+}
+
+/* -----------------------------------------
+   3. TABLA CHECKLIST - Estilo especial
+   Para tablas de Sí/No, Cumple/No cumple
+   ----------------------------------------- */
+.blog-content table:has(td:contains("☐")) td,
+.blog-content table:has(td:contains("✅")) td,
+.blog-content table:has(td:contains("❌")) td {
+  white-space: nowrap;
+}
+
+/* Checkbox column más estrecha */
+.blog-content table td:last-child:has(☐),
+.blog-content table td:last-child:has(✅) {
+  width: 120px;
+  text-align: center;
+}
+
+/* Estilo alternativo para checklist - como cards */
+.checklist-table {
+  display: grid;
+  gap: 12px;
+  margin: 2rem 0;
+}
+
+.checklist-table .checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.checklist-table .checklist-item:hover {
+  border-color: #14b8a6;
+  box-shadow: 0 2px 8px rgba(20, 184, 166, 0.1);
+}
+
+.checklist-table .check-box {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #cbd5e1;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.checklist-table .check-box.checked {
+  background: #14b8a6;
+  border-color: #14b8a6;
+  color: white;
+}
+
+/* -----------------------------------------
+   4. TABLAS RESPONSIVAS
+   ----------------------------------------- */
+@media (max-width: 768px) {
+  .blog-content table {
+    font-size: 0.85rem;
+  }
+  
+  .blog-content th,
+  .blog-content td {
+    padding: 10px 12px;
+  }
+  
+  /* Scroll horizontal si es necesario */
+  .blog-content .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 2rem -1rem;
+    padding: 0 1rem;
+  }
+  
+  .blog-content .table-wrapper table {
+    min-width: 500px;
+  }
+}
+
+/* -----------------------------------------
+   5. TABLA DE EJEMPLO NUMÉRICO
+   Destacar totales y resultados
+   ----------------------------------------- */
+.blog-content table tbody tr:has(td strong:first-child) {
+  background: #f0fdfa;
+  font-weight: 500;
+}
+
+/* Fila de total final */
+.blog-content table tbody tr:last-child:has(strong) {
+  background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+}
+
+.blog-content table tbody tr:last-child:has(strong) td {
+  font-weight: 600;
+  color: #0f766e;
+  border-top: 2px solid #14b8a6;
+}
+
+/* -----------------------------------------
+   6. MEJORAS GENERALES DE CONTENIDO
+   ----------------------------------------- */
+
+/* Espaciado entre secciones */
+.blog-content h2 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.blog-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Listas más legibles */
+.blog-content ul,
+.blog-content ol {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.blog-content li {
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+
+/* Blockquotes destacados */
+.blog-content blockquote {
+  margin: 2rem 0;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+  border-left: 4px solid #eab308;
+  border-radius: 0 12px 12px 0;
+  font-style: normal;
+}
+
+.blog-content blockquote p {
+  margin: 0;
+  color: #713f12;
+}
+
+/* Código inline */
+.blog-content code:not(pre code) {
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #0f766e;
+}
+
+/* -----------------------------------------
+   7. TOC (Table of Contents) mejorado
+   ----------------------------------------- */
+.toc {
+  background: #f8fafb;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.toc-title {
+  font-weight: 600;
+  color: #0f766e;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc li {
+  margin-bottom: 0.5rem;
+}
+
+.toc a {
+  color: #475569;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: block;
+  padding: 4px 0;
+}
+
+.toc a:hover {
+  color: #14b8a6;
+}
+
+/* Números en el TOC */
+.toc li {
+  counter-increment: toc-counter;
+}
+
+.toc a::before {
+  content: counter(toc-counter) ". ";
+  color: #14b8a6;
+  font-weight: 500;
+}
+
+.toc {
+  counter-reset: toc-counter;
+}
