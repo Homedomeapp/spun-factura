@@ -1,6 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 
+interface FaqItem {
+  q: string;
+  a: string;
+}
+
 interface Props {
   title: string;
   description: string;
@@ -12,6 +17,7 @@ interface Props {
   image?: string;
   imageAlt?: string;
   headings?: { depth: number; slug: string; text: string }[];
+  faq?: FaqItem[];
 }
 
 const { 
@@ -24,11 +30,9 @@ const {
   readingTime,
   image,
   imageAlt,
-  headings = []
+  headings = [],
+  faq = []
 } = Astro.props;
-
-// DEBUG: Log para verificar que image llega
-console.log('BlogPost received image:', image);
 
 const currentSlug = Astro.url.pathname.split('/').filter(Boolean).pop();
 
@@ -39,7 +43,7 @@ let relatedPosts = otherPosts
   .sort((a, b) => new Date(b.data.publishedDate).valueOf() - new Date(a.data.publishedDate).valueOf())
   .slice(0, 3);
 
-// TOC: filtrar solo H2 para el índice
+// TOC: filtrar solo H2
 const tocHeadings = headings.filter(h => h.depth === 2);
 
 const formattedDate = new Date(publishedDate).toLocaleDateString('es-ES', {
@@ -55,7 +59,7 @@ const formattedUpdatedDate = updatedDate
 const canonicalURL = `https://factura.spun.es${Astro.url.pathname}`;
 const ogImage = image ? `https://factura.spun.es${image}` : 'https://factura.spun.es/images/og-spun-factura.png';
 
-// Schema.org
+// Schema.org BlogPosting
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
@@ -73,6 +77,7 @@ const articleSchema = {
   "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalURL }
 };
 
+// Schema.org BreadcrumbList
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -82,6 +87,20 @@ const breadcrumbSchema = {
     { "@type": "ListItem", "position": 3, "name": title, "item": canonicalURL }
   ]
 };
+
+// Schema.org FAQPage (solo si hay FAQ)
+const faqSchema = faq && faq.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faq.map(item => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.a
+    }
+  }))
+} : null;
 ---
 
 <!DOCTYPE html>
@@ -115,9 +134,12 @@ const breadcrumbSchema = {
   <meta name="twitter:description" content={description}>
   <meta name="twitter:image" content={ogImage}>
   
-  <!-- Schema.org -->
+  <!-- Schema.org - Article -->
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  <!-- Schema.org - Breadcrumb -->
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <!-- Schema.org - FAQPage (solo si hay FAQ) -->
+  {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -167,10 +189,7 @@ const breadcrumbSchema = {
         )}
       </header>
       
-      <!-- ============================================
-           FEATURED IMAGE - CRÍTICO
-           La imagen se renderiza aquí si existe
-           ============================================ -->
+      <!-- Featured Image -->
       {image && (
         <img 
           src={image} 
@@ -182,10 +201,7 @@ const breadcrumbSchema = {
         />
       )}
       
-      <!-- ============================================
-           TABLE OF CONTENTS - BUILD TIME
-           Solo aparece si hay 2+ headings H2
-           ============================================ -->
+      <!-- Table of Contents -->
       {tocHeadings.length >= 2 && (
         <nav class="toc" aria-label="Tabla de contenidos">
           <div class="toc-title">📑 Contenido del artículo</div>
@@ -202,10 +218,35 @@ const breadcrumbSchema = {
         </nav>
       )}
       
+      <!-- Cluster Navigation (si hay posts relacionados en el mismo cluster) -->
+      {relatedPosts.filter(p => p.data.category === category).length > 0 && (
+        <div class="cluster-nav">
+          <span class="cluster-label">📚 Más sobre {category}:</span>
+          {relatedPosts.filter(p => p.data.category === category).slice(0, 2).map(post => (
+            <a href={`/blog/${post.slug}`} class="cluster-link">{post.data.title}</a>
+          ))}
+        </div>
+      )}
+      
       <!-- Article Content -->
       <div class="article-content">
         <slot />
       </div>
+      
+      <!-- FAQ Section (visible, para que el schema sea válido) -->
+      {faq && faq.length > 0 && (
+        <section class="faq-section">
+          <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
+          <div class="faq-list">
+            {faq.map((item, index) => (
+              <details class="faq-item" open={index === 0}>
+                <summary class="faq-question">{item.q}</summary>
+                <p class="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
       
       <!-- Post Footer -->
       <footer class="post-footer">
@@ -376,9 +417,7 @@ const breadcrumbSchema = {
       font-size: 0.75rem;
     }
     
-    /* ============================================
-       FEATURED IMAGE STYLES
-       ============================================ */
+    /* Featured Image */
     .featured-image {
       width: 100%;
       height: auto;
@@ -389,15 +428,13 @@ const breadcrumbSchema = {
       display: block;
     }
     
-    /* ============================================
-       TABLE OF CONTENTS STYLES
-       ============================================ */
+    /* Table of Contents */
     .toc {
       background: var(--color-bg-alt);
       border: 1px solid var(--color-border);
       border-radius: 12px;
       padding: 24px 28px;
-      margin-bottom: 40px;
+      margin-bottom: 32px;
     }
     
     .toc-title {
@@ -437,6 +474,40 @@ const breadcrumbSchema = {
     }
     
     .toc-list a:hover { color: var(--color-primary-dark); }
+    
+    /* Cluster Navigation */
+    .cluster-nav {
+      background: linear-gradient(135deg, var(--color-bg-section) 0%, #E8FAFB 100%);
+      border: 1px solid var(--color-primary-light);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .cluster-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    
+    .cluster-link {
+      font-size: 0.8125rem;
+      color: var(--color-primary-dark);
+      text-decoration: none;
+      padding: 4px 12px;
+      background: white;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+    }
+    
+    .cluster-link:hover {
+      border-color: var(--color-primary);
+      background: var(--color-bg-section);
+    }
     
     /* Article content */
     .article-content {
@@ -561,6 +632,63 @@ const breadcrumbSchema = {
     
     .btn-primary:hover { background: var(--color-primary-dark); }
     
+    /* FAQ Section */
+    .faq-section {
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid var(--color-border);
+    }
+    
+    .faq-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      scroll-margin-top: calc(var(--header-height) + 28px);
+    }
+    
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .faq-item {
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .faq-question {
+      padding: 20px 24px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .faq-question::before {
+      content: "❓";
+      flex-shrink: 0;
+    }
+    
+    .faq-question::-webkit-details-marker { display: none; }
+    
+    .faq-item[open] .faq-question {
+      border-bottom: 1px solid var(--color-border);
+    }
+    
+    .faq-answer {
+      padding: 20px 24px;
+      margin: 0;
+      font-size: 0.9375rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+    }
+    
     /* Post footer */
     .post-footer {
       margin-top: 56px;
@@ -661,6 +789,7 @@ const breadcrumbSchema = {
       .related-grid { grid-template-columns: 1fr; }
       .article-content .cta-box { padding: 28px 20px; }
       .nav-links a:not(.btn-nav) { display: none; }
+      .cluster-nav { flex-direction: column; align-items: flex-start; }
     }
     
     @media (max-width: 480px) {
