@@ -1,0 +1,129 @@
+name: 🤖 Content Bot
+on:
+  issues:
+    types: [labeled]
+env:
+  NODE_VERSION: '20'
+jobs:
+  process-content-request:
+    if: github.event.label.name == 'content-bot'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - name: Parse issue body
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body;
+            function parseField(body, fieldName) {
+              const regex = new RegExp(`### ${fieldName}\\s*\\n\\s*([\\s\\S]*?)(?=###|$)`, 'i');
+              const match = body.match(regex);
+              return match ? match[1].trim().replace(/^_No response_$/i, '') : '';
+            }
+            const data = {
+              action: parseField(body, 'Acción'),
+              slug: parseField(body, 'Slug \\(URL\\)').toLowerCase().replace(/[^a-z0-9-]/g, '-'),
+              title: parseField(body, 'Título'),
+              description: parseField(body, 'Meta Description'),
+              category: parseField(body, 'Categoría'),
+              tags: parseField(body, 'Tags'),
+              keywords: parseField(body, 'Keywords SEO'),
+              cluster: parseField(body, 'Cluster de Contenido'),
+              brief: parseField(body, 'Brief / Instrucciones'),
+              internal_links: parseField(body, 'Enlaces Internos'),
+              sources: parseField(body, 'Fuentes Oficiales')
+            };
+            if (!data.slug || !data.action) { core.setFailed('Faltan campos'); return; }
+            core.setOutput('action', data.action);
+            core.setOutput('slug', data.slug);
+            core.setOutput('data', JSON.stringify(data));
+      - name: Create branch
+        id: branch
+        run: |
+          BRANCH="content-bot/${{ steps.parse.outputs.slug }}-$(date +%Y%m%d%H%M%S)"
+          git config user.name "Content Bot"
+          git config user.email "content-bot@spun.es"
+          git checkout -b "$BRANCH"
+          echo "branch_name=$BRANCH" >> $GITHUB_OUTPUT
+      - name: Generate content
+        if: contains(steps.parse.outputs.action, 'create') || contains(steps.parse.outputs.action, 'update')
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CONTENT_DATA: ${{ steps.parse.outputs.data }}
+        run: node .github/scripts/generate-content.js
+      - name: Delete content
+        if: contains(steps.parse.outputs.action, 'delete')
+        run: rm -f "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
+      - name: Validate
+        if: "!contains(steps.parse.outputs.action, 'delete')"
+        run: node .github/scripts/validate-frontmatter.js "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
+      - name: Check links
+        if: "!contains(steps.parse.outputs.action, 'delete')"
+        run: node .github/scripts/check-links.js "src/content/blog/${{ steps.parse.outputs.slug }}.mdx"
+      - name: Build test
+        run: npm run build
+      - name: Commit and push
+        run: |
+          git add -A
+          git commit -m "content(${{ steps.parse.outputs.action }}): ${{ steps.parse.outputs.slug }}"
+          git push origin ${{ steps.branch.outputs.branch_name }}
+      - name: Create PR
+        id: pr
+        uses: actions/github-script@v7
+        env:
+          CONTENT_DATA: ${{ steps.parse.outputs.data }}
+        with:
+          script: |
+            const data = JSON.parse(process.env.CONTENT_DATA);
+            const pr = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `✨ Content: ${data.title || '${{ steps.parse.outputs.slug }}'}`,
+              head: '${{ steps.branch.outputs.branch_name }}',
+              base: 'main',
+              body: `## 🤖 Content Bot\n\n**Issue:** #${{ github.event.issue.number }}\n**Slug:** \`${{ steps.parse.outputs.slug }}\`\n**Categoría:** ${data.category}\n\n### ✅ Checklist\n- [ ] Título SEO correcto\n- [ ] Description 150-155 chars\n- [ ] Contenido correcto\n- [ ] Enlaces funcionan\n- [ ] CTA presente\n\n**Preview:** https://factura.spun.es/blog/${{ steps.parse.outputs.slug }}`
+            });
+            core.setOutput('pr_url', pr.data.html_url);
+      - name: Comment on issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## ✅ PR creado\n\n👉 ${{ steps.pr.outputs.pr_url }}\n\n**Próximos pasos:**\n1. Revisa el PR\n2. Merge cuando esté listo\n3. Vercel despliega automáticamente`
+            });
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['pr-created']
+            });
+
+  handle-error:
+    needs: process-content-request
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## ❌ Error\n\nRevisa los logs: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
