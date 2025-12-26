@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros | SPUN Factura - Quiénes Somos</title>
+    <meta name="description" content="Conoce al equipo detrás de SPUN Factura. Experiencia real en construcción y reformas, desarrollando software de facturación que entiende tu trabajo.">
+    <link rel="canonical" href="https://factura.spun.es/sobre-nosotros">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Sobre Nosotros | SPUN Factura">
+    <meta property="og:description" content="Conoce al equipo detrás de SPUN Factura. Experiencia real en construcción y reformas.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://factura.spun.es/sobre-nosotros">
+    <meta property="og:image" content="https://factura.spun.es/images/og-spun-factura.png">
+    
+    <!-- Schema.org: AboutPage -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "mainEntity": {
+            "@type": "Organization",
+            "@id": "https://spun.es/#organization",
+            "name": "SPUN",
+            "legalName": "Homedome Ibérica S.L.",
+            "url": "https://spun.es",
+            "logo": "https://factura.spun.es/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png",
+            "email": "hola@spun.es",
+            "foundingDate": "2020-08-03",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Madrid",
+                "addressCountry": "ES"
+            },
+            "taxID": "B88637574",
+            "knowsAbout": [
+                "Facturación electrónica",
+                "Verifactu",
+                "RD 1007/2023",
+                "Construcción y reformas",
+                "IVA reducido en reformas"
+            ]
+        }
+    }
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-primary: #34CED6;
+            --color-primary-dark: #2BB5BD;
+            --color-primary-light: #9EE8EC;
+            --color-bg: #FFFFFF;
+            --color-bg-alt: #F8FAFB;
+            --color-bg-section: #F0FCFD;
+            --color-text: #1E293B;
+            --color-text-muted: #64748B;
+            --color-border: #E2E8F0;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background: var(--color-bg); color: var(--color-text); line-height: 1.7; font-size: 16px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 14px 0; position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.97); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--color-border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+        .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .logo img { height: 32px; width: auto; }
+        .logo-text { font-weight: 500; font-size: 0.875rem; color: var(--color-text-muted); }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { font-size: 0.875rem; color: var(--color-text-muted); text-decoration: none; }
+        .nav-links a:hover { color: var(--color-primary-dark); }
+        .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--color-primary); color: white; border-radius: 8px; font-size: 0.875rem; font-weight: 600; text-decoration: none; }
+        .btn-primary:hover { background: var(--color-primary-dark); }
+        
+        main { padding: 120px 0 60px; }
+        
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; }
+        h2 { font-size: 1.5rem; font-weight: 600; margin: 40px 0 16px; color: var(--color-text); }
+        h3 { font-size: 1.125rem; font-weight: 600; margin: 24px 0 12px; }
+        
+        p { margin-bottom: 16px; color: var(--color-text-muted); }
+        p.lead { font-size: 1.125rem; color: var(--color-text); margin-bottom: 32px; }
+        
+        .highlight-box { background: var(--color-bg-section); border: 1px solid var(--color-primary-light); border-radius: 12px; padding: 24px 28px; margin: 32px 0; }
+        .highlight-box h3 { margin-top: 0; color: var(--color-primary-dark); }
+        
+        .company-info { background: var(--color-bg-alt); border-radius: 12px; padding: 24px 28px; margin: 32px 0; }
+        .company-info h3 { margin-top: 0; }
+        .company-info ul { list-style: none; padding: 0; }
+        .company-info li { padding: 8px 0; border-bottom: 1px solid var(--color-border); display: flex; }
+        .company-info li:last-child { border-bottom: none; }
+        .company-info .label { font-weight: 500; color: var(--color-text); min-width: 180px; }
+        .company-info .value { color: var(--color-text-muted); }
+        
+        .values-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 24px 0; }
+        .value-card { background: white; border: 1px solid var(--color-border); border-radius: 10px; padding: 20px; }
+        .value-card h4 { font-size: 1rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .value-card p { font-size: 0.9375rem; margin: 0; }
+        
+        .cta-box { background: var(--color-bg-section); border: 1px solid var(--color-primary-light); border-radius: 12px; padding: 32px; text-align: center; margin: 48px 0 0; }
+        .cta-box h3 { margin: 0 0 8px; }
+        .cta-box p { margin-bottom: 20px; }
+        
+        a { color: var(--color-primary-dark); }
+        
+        footer { padding: 28px 0; border-top: 1px solid var(--color-border); text-align: center; margin-top: 60px; }
+        .footer-text { font-size: 0.8125rem; color: var(--color-text-muted); }
+        .footer-links { margin-top: 8px; }
+        .footer-links a { margin: 0 10px; font-size: 0.75rem; color: var(--color-primary-dark); text-decoration: none; }
+        
+        @media (max-width: 600px) {
+            .values-grid { grid-template-columns: 1fr; }
+            .company-info li { flex-direction: column; }
+            .company-info .label { min-width: auto; margin-bottom: 4px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <img src="/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" alt="SPUN">
+                <span class="logo-text">Factura</span>
+            </a>
+            <nav class="nav-links">
+                <a href="/blog">Blog</a>
+                <a href="/sobre-nosotros">Sobre nosotros</a>
+                <a href="/#reservar" class="btn-primary">Reservar plaza</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Sobre SPUN Factura</h1>
+            <p class="lead">No somos una startup de Silicon Valley que descubrió la construcción ayer. Venimos de trabajar con el sector y entendemos sus problemas reales.</p>
+
+            <h2>Por qué creamos SPUN Factura</h2>
+            <p>Después de años trabajando con empresas de reformas, constructoras y profesionales de la construcción en España, nos dimos cuenta de algo: <strong>los programas de facturación no están hechos para este sector</strong>.</p>
+            <p>La mayoría de software está pensado para consultorías, tiendas online o servicios profesionales. Llenos de opciones que no usas, pero sin lo básico: partidas de obra, IVA reducido configurado, o la posibilidad de adjuntar fotos del trabajo.</p>
+            <p>Y ahora, con Verifactu llegando en 2027, muchos profesionales van a tener que cambiar de programa obligatoriamente. Nos pareció el momento perfecto para crear algo mejor.</p>
+
+            <div class="highlight-box">
+                <h3>💡 Nuestra visión</h3>
+                <p style="margin-bottom: 0;">Crear el software de facturación que nosotros querríamos usar si fuéramos electricistas, fontaneros o reformistas. Simple, útil, y que cumpla con Hacienda sin que tengas que convertirte en experto fiscal.</p>
+            </div>
+
+            <h2>Qué nos diferencia</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <h4>🏗️ Hecho para construcción</h4>
+                    <p>No adaptamos un software genérico. Diseñamos desde cero pensando en cómo trabajas tú.</p>
+                </div>
+                <div class="value-card">
+                    <h4>📋 Sin letra pequeña</h4>
+                    <p>Precio claro, sin sorpresas. Los early adopters mantienen 9,99€/mes para siempre.</p>
+                </div>
+                <div class="value-card">
+                    <h4>🇪🇸 Empresa española</h4>
+                    <p>Entendemos la normativa española porque la vivimos. No traducimos de otro mercado.</p>
+                </div>
+                <div class="value-card">
+                    <h4>🔄 Actualizaciones incluidas</h4>
+                    <p>Cuando Hacienda cambie algo, lo actualizamos nosotros. Tú sigues facturando.</p>
+                </div>
+            </div>
+
+            <h2>Datos de empresa</h2>
+            <div class="company-info">
+                <h3>Homedome Ibérica S.L.</h3>
+                <ul>
+                    <li><span class="label">CIF</span><span class="value">B88637574</span></li>
+                    <li><span class="label">Sede</span><span class="value">Madrid, España</span></li>
+                    <li><span class="label">Registro Mercantil</span><span class="value">Madrid</span></li>
+                    <li><span class="label">Constituida</span><span class="value">3 de agosto de 2020</span></li>
+                    <li><span class="label">Email</span><span class="value"><a href="mailto:hola@spun.es">hola@spun.es</a></span></li>
+                </ul>
+            </div>
+
+            <h2>Contacto</h2>
+            <p>¿Tienes dudas sobre SPUN Factura? ¿Quieres contarnos cómo facturas ahora? Escríbenos:</p>
+            <ul>
+                <li><strong>Email general:</strong> <a href="mailto:hola@spun.es">hola@spun.es</a></li>
+                <li><strong>Privacidad y datos:</strong> <a href="mailto:privacidad@spun.es">privacidad@spun.es</a></li>
+            </ul>
+
+            <div class="cta-box">
+                <h3>¿Quieres ser de los primeros?</h3>
+                <p>Reserva tu plaza y mantén el precio de early adopter para siempre.</p>
+                <a href="/#reservar" class="btn-primary">Reservar mi plaza →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="footer-text">SPUN Factura · Homedome Ibérica S.L. · CIF B88637574 · Madrid</p>
+            <div class="footer-links">
+                <a href="/privacidad">Privacidad</a>
+                <a href="/aviso-legal">Aviso Legal</a>
+                <a href="/cookies">Cookies</a>
+                <a href="/sobre-nosotros">Sobre nosotros</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
