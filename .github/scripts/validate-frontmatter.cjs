@@ -36,7 +36,7 @@ function validate(fm) {
   const errors = [];
   for (const [field, rules] of Object.entries(RULES)) {
     const val = fm[field];
-    if (rules.required && !val) errors.push(`${field}: required`);
+    if (rules.required && val === undefined) errors.push(`${field}: required`);
     if (rules.minLength && val?.length < rules.minLength) errors.push(`${field}: min ${rules.minLength} chars`);
     if (rules.maxLength && val?.length > rules.maxLength) errors.push(`${field}: max ${rules.maxLength} chars`);
     if (rules.pattern && !rules.pattern.test(val)) errors.push(`${field}: invalid format`);
