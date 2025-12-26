@@ -1,0 +1,149 @@
+name: "📝 Content Bot - Crear/Editar/Eliminar Contenido"
+description: "Solicita crear, actualizar o eliminar páginas del blog usando IA"
+title: "[CONTENT] "
+labels: ["content-bot"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🤖 Content Bot - SPUN Factura
+        Rellena este formulario y el bot creará automáticamente un PR con el contenido.
+        
+        **Proceso**: Issue → Bot genera contenido → PR automático → Revisas → Merge → Vercel despliega
+
+  - type: dropdown
+    id: action
+    attributes:
+      label: "Acción"
+      description: "¿Qué quieres hacer?"
+      options:
+        - create (crear nuevo post)
+        - update (actualizar post existente)
+        - delete (eliminar post)
+    validations:
+      required: true
+
+  - type: input
+    id: slug
+    attributes:
+      label: "Slug (URL)"
+      description: "Solo letras minúsculas, números y guiones. Ej: que-es-verifactu"
+      placeholder: "mi-nuevo-articulo"
+    validations:
+      required: true
+
+  - type: input
+    id: title
+    attributes:
+      label: "Título"
+      description: "Título SEO del artículo (50-60 caracteres ideal)"
+      placeholder: "Guía Completa de Verifactu 2025: Todo lo que Necesitas Saber"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Meta Description"
+      description: "Descripción para SEO. DEBE tener entre 150-155 caracteres exactos."
+      placeholder: "Descubre qué es Verifactu, cuándo entra en vigor y cómo afecta a tu negocio. Guía actualizada con fechas, requisitos y soluciones prácticas."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: "Categoría"
+      options:
+        - verifactu
+        - facturacion
+        - autonomos
+        - fiscalidad
+        - guias
+        - normativa
+    validations:
+      required: true
+
+  - type: input
+    id: tags
+    attributes:
+      label: "Tags"
+      description: "Separados por coma"
+      placeholder: "verifactu, factura electrónica, hacienda, 2025"
+    validations:
+      required: true
+
+  - type: input
+    id: keywords
+    attributes:
+      label: "Keywords SEO"
+      description: "Palabras clave objetivo, separadas por coma"
+      placeholder: "verifactu obligatorio, software verifactu, factura electrónica españa"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: cluster
+    attributes:
+      label: "Cluster de Contenido"
+      description: "¿A qué pilar pertenece este contenido?"
+      options:
+        - pilar-verifactu (contenido principal Verifactu)
+        - cluster-autonomos (enfocado en autónomos)
+        - cluster-pymes (enfocado en pequeñas empresas)
+        - cluster-software (comparativas y herramientas)
+        - standalone (artículo independiente)
+    validations:
+      required: true
+
+  - type: textarea
+    id: brief
+    attributes:
+      label: "Brief / Instrucciones"
+      description: "Describe qué debe cubrir el artículo. Cuanto más detalle, mejor resultado."
+      placeholder: |
+        Escribe un artículo que explique:
+        - Qué es Verifactu y por qué es obligatorio
+        - Fechas clave de implementación
+        - Quién está obligado y quién exento
+        - Pasos para adaptarse
+        - Mencionar SPUN Factura como solución
+    validations:
+      required: true
+
+  - type: textarea
+    id: internal_links
+    attributes:
+      label: "Enlaces Internos"
+      description: "URLs de otros artículos del blog para enlazar (uno por línea)"
+      placeholder: |
+        /blog/que-es-verifactu
+        /blog/factura-electronica-autonomos
+        /blog/software-facturacion-homologado
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: "Fuentes Oficiales"
+      description: "URLs de fuentes a citar (BOE, AEAT, etc.)"
+      placeholder: |
+        https://www.boe.es/...
+        https://sede.agenciatributaria.gob.es/...
+
+  - type: input
+    id: image_prompt
+    attributes:
+      label: "Prompt para Imagen (opcional)"
+      description: "Descripción para generar imagen de cabecera con IA"
+      placeholder: "Ilustración minimalista de factura digital con iconos de verificación, colores azul y turquesa"
+
+  - type: checkboxes
+    id: options
+    attributes:
+      label: "Opciones"
+      options:
+        - label: "Marcar como borrador (no publicar inmediatamente)"
+        - label: "Incluir tabla comparativa"
+        - label: "Incluir checklist descargable"
+        - label: "Incluir calculadora/herramienta interactiva"
+        - label: "Prioridad alta (procesar primero)"
