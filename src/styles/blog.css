@@ -18,6 +18,12 @@
   --max-width-page: 1140px;
 }
 
+/* Scroll offset para header fijo */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
 /* ===========================================
    BLOG INDEX PAGE
    =========================================== */
@@ -313,7 +319,7 @@
 .article-content h2,
 .article-content h3,
 .article-content h4 {
-  scroll-margin-top: calc(var(--header-height) + 28px);
+  scroll-margin-top: 100px;
 }
 
 .article-content h2 {
@@ -321,7 +327,9 @@
   font-weight: 700;
   margin: 56px 0 20px;
   padding-top: 32px;
+  padding-bottom: 12px;
   border-top: 1px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
   color: var(--color-text);
 }
 
@@ -370,6 +378,7 @@
 
 .article-content strong {
   font-weight: 600;
+  color: var(--color-primary-dark);
 }
 
 .article-content code {
@@ -409,31 +418,117 @@
   color: #92400E;
 }
 
-/* Tables */
+/* ===========================================
+   TABLAS - Estilo Card Profesional
+   =========================================== */
+
 .article-content table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin: 32px 0;
   font-size: 0.9375rem;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 
+              0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--color-border);
 }
 
-.article-content th,
-.article-content td {
-  padding: 14px 18px;
-  border: 1px solid var(--color-border);
-  text-align: left;
+.article-content thead {
+  background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
 }
 
 .article-content th {
-  background: var(--color-bg-alt);
+  padding: 16px 20px;
+  text-align: left;
   font-weight: 600;
+  color: var(--color-primary-dark);
+  border: none;
+  border-bottom: 2px solid var(--color-primary);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: transparent;
 }
 
-.article-content tr:hover td {
+.article-content td {
+  padding: 16px 20px;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  vertical-align: middle;
+  background: transparent;
+}
+
+.article-content tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Zebra rows */
+.article-content tbody tr:nth-child(even) {
+  background-color: var(--color-bg-alt);
+}
+
+/* Hover en filas */
+.article-content tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.article-content tbody tr:hover {
+  background-color: var(--color-bg-section);
+}
+
+/* Fix "Sí / No" en líneas separadas */
+.article-content td:last-child,
+.article-content th:last-child {
+  white-space: nowrap;
+  min-width: 120px;
+  text-align: center;
+}
+
+.article-content td:first-child,
+.article-content th:first-child {
+  text-align: left;
+}
+
+/* Filas destacadas (totales, subtotales) */
+.article-content tbody tr td strong {
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+/* ===========================================
+   PRIMER PÁRRAFO - Resumen destacado
+   =========================================== */
+
+.article-content > p:first-of-type {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
+  border: 1px solid var(--color-primary-light);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+/* ===========================================
+   SEGUNDO PÁRRAFO - "En 30 segundos"
+   =========================================== */
+
+.article-content > p:nth-of-type(2) {
   background: var(--color-bg-alt);
+  border-left: 4px solid var(--color-primary);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 32px;
 }
 
-/* CTA Box in Article */
+/* ===========================================
+   CTA Box in Article
+   =========================================== */
+
 .article-content .cta-box,
 .cta-box {
   background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
@@ -457,6 +552,24 @@
   color: var(--color-text-muted);
   margin-bottom: 24px !important;
   font-size: 1rem;
+}
+
+/* CTA Button Styling */
+.article-content p > a[href="/"]:only-child {
+  display: inline-block;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white !important;
+  text-decoration: none !important;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(52, 206, 214, 0.3);
+}
+
+.article-content p > a[href="/"]:only-child:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 206, 214, 0.4);
 }
 
 /* Sources Section */
@@ -488,6 +601,19 @@
 .sources li {
   padding: 8px 0;
   font-size: 0.9375rem;
+}
+
+/* Disclaimer final */
+.article-content > p:last-of-type em:only-child {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 16px;
+  background: var(--color-bg-alt);
+  border-radius: 8px;
+  margin-top: 24px;
+  font-style: normal;
 }
 
 /* Post Footer */
@@ -568,6 +694,56 @@
 }
 
 /* ===========================================
+   FAQ SECTION
+   =========================================== */
+
+.faq-section {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+}
+
+.faq-item {
+  margin-bottom: 16px;
+  background: var(--color-bg-alt);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.faq-item summary {
+  padding: 20px 24px;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  font-weight: 300;
+}
+
+.faq-item[open] summary::after {
+  content: "−";
+}
+
+.faq-item p {
+  padding: 0 24px 20px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ===========================================
    BUTTONS
    =========================================== */
 
@@ -633,6 +809,24 @@
   .toc {
     padding: 20px;
   }
+  
+  /* Tablas responsivas */
+  .article-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 0.875rem;
+    margin-left: -16px;
+    margin-right: -16px;
+    width: calc(100% + 32px);
+    border-radius: 0;
+    box-shadow: none;
+  }
+  
+  .article-content th,
+  .article-content td {
+    padding: 12px 14px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -648,275 +842,4 @@
   .breadcrumbs {
     font-size: 0.75rem;
   }
-}
-/* ===========================================
-   MEJORAS BLOG - CORREGIDO
-   REEMPLAZA todo lo que está después de la línea 380 en blog.css
-   (elimina la sección "MEJORAS BLOG SPUN FACTURA" anterior)
-   =========================================== */
-
-/* -----------------------------------------
-   1. SCROLL OFFSET - Header fijo (P0)
-   ----------------------------------------- */
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 100px;
-}
-
-/* -----------------------------------------
-   2. TABLAS - Estilo card profesional (P0)
-   Sobrescribe los estilos básicos anteriores
-   ----------------------------------------- */
-.article-content table {
-  width: 100%;
-  border-collapse: separate !important;
-  border-spacing: 0;
-  margin: 32px 0;
-  font-size: 0.9375rem;
-  background: #ffffff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 
-              0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--color-border);
-}
-
-.article-content thead {
-  background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
-}
-
-.article-content th {
-  padding: 14px 20px;
-  text-align: left;
-  font-weight: 600;
-  color: var(--color-primary-dark);
-  border-bottom: 2px solid var(--color-primary);
-  border-right: none;
-  border-left: none;
-  border-top: none;
-  font-size: 0.8125rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: transparent;
-}
-
-.article-content td {
-  padding: 14px 20px;
-  border: none;
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text);
-  vertical-align: middle;
-  background: transparent;
-}
-
-.article-content tbody tr:last-child td {
-  border-bottom: none;
-}
-
-/* Zebra rows */
-.article-content tbody tr:nth-child(even) {
-  background-color: var(--color-bg-alt);
-}
-
-/* Hover en filas */
-.article-content tbody tr {
-  transition: background-color 0.15s ease;
-}
-
-.article-content tbody tr:hover {
-  background-color: var(--color-bg-section);
-}
-
-/* -----------------------------------------
-   3. FIX "Sí / No" en líneas separadas
-   ----------------------------------------- */
-.article-content td:last-child,
-.article-content th:last-child {
-  white-space: nowrap;
-  min-width: 100px;
-  text-align: center;
-}
-
-.article-content td:first-child,
-.article-content th:first-child {
-  text-align: left;
-}
-
-/* -----------------------------------------
-   4. TABLAS RESPONSIVAS (móvil)
-   ----------------------------------------- */
-@media (max-width: 768px) {
-  .article-content table {
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    font-size: 0.875rem;
-    margin-left: -16px;
-    margin-right: -16px;
-    width: calc(100% + 32px);
-    border-radius: 0;
-  }
-  
-  .article-content th,
-  .article-content td {
-    padding: 12px 14px;
-  }
-}
-
-/* -----------------------------------------
-   5. FILAS DESTACADAS (totales, subtotales)
-   ----------------------------------------- */
-.article-content tr td strong,
-.article-content tr th strong {
-  color: var(--color-primary-dark);
-}
-
-/* Cuando la primera celda tiene strong = fila de total */
-.article-content tbody tr td:first-child strong {
-  font-weight: 700;
-}
-
-/* -----------------------------------------
-   6. RESUMEN RÁPIDO - Primera párrafo destacado
-   ----------------------------------------- */
-.article-content > p:first-of-type {
-  font-size: 1.0625rem;
-  line-height: 1.75;
-  padding: 20px 24px;
-  background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
-  border: 1px solid var(--color-primary-light);
-  border-radius: 12px;
-  margin-bottom: 32px;
-}
-
-.article-content > p:first-of-type strong {
-  color: var(--color-primary-dark);
-}
-
-/* -----------------------------------------
-   7. SEGUNDO PÁRRAFO "En 30 segundos"
-   ----------------------------------------- */
-.article-content > p:nth-of-type(2) {
-  background: var(--color-bg-alt);
-  border-left: 4px solid var(--color-primary);
-  padding: 16px 20px;
-  border-radius: 0 8px 8px 0;
-  margin-bottom: 32px;
-}
-
-.article-content > p:nth-of-type(2) strong {
-  color: var(--color-primary-dark);
-}
-
-/* -----------------------------------------
-   8. MEJOR ESPACIADO SECCIONES
-   ----------------------------------------- */
-.article-content h2 {
-  margin-top: 56px;
-  margin-bottom: 20px;
-  padding-top: 32px;
-  padding-bottom: 12px;
-  border-top: 1px solid var(--color-border);
-  border-bottom: 2px solid var(--color-border);
-}
-
-.article-content h2:first-of-type,
-.article-content h2:first-child {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: none;
-}
-
-/* -----------------------------------------
-   9. CALLOUTS para "Ejemplo:", "Importante:", "Recomendación:"
-   ----------------------------------------- */
-.article-content p strong:only-child,
-.article-content p > strong:first-child {
-  color: var(--color-primary-dark);
-}
-
-/* -----------------------------------------
-   10. LISTA DESPUÉS DEL H2 "Fuentes"
-   ----------------------------------------- */
-.article-content h2 + ul:last-of-type,
-.sources ul {
-  background: var(--color-bg-alt);
-  padding: 20px 24px 20px 40px;
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
-  font-size: 0.9375rem;
-}
-
-/* -----------------------------------------
-   11. DISCLAIMER FINAL (después de hr)
-   ----------------------------------------- */
-.article-content hr + p:last-of-type,
-.article-content > p:last-of-type em {
-  font-size: 0.8125rem;
-  color: var(--color-text-muted);
-  text-align: center;
-  display: block;
-  padding: 16px;
-  background: var(--color-bg-alt);
-  border-radius: 8px;
-  margin-top: 24px;
-}
-
-/* -----------------------------------------
-   12. CTA BUTTON STYLING
-   ----------------------------------------- */
-.article-content p > a[href="/"]:only-child,
-.article-content a[href="/"][class*="btn"],
-.article-content p > strong > a[href="/"] {
-  display: inline-block;
-  padding: 14px 32px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: white !important;
-  text-decoration: none !important;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(52, 206, 214, 0.3);
-}
-
-.article-content p > a[href="/"]:only-child:hover,
-.article-content a[href="/"][class*="btn"]:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(52, 206, 214, 0.4);
-}
-
-/* Centrar el párrafo que contiene solo el CTA */
-.article-content p:has(> a[href="/"]:only-child) {
-  text-align: center;
-  margin: 40px 0;
-}
-
-/* -----------------------------------------
-   13. FAQ SECTION (si se renderiza desde layout)
-   Solo estilos, no duplicar contenido
-   ----------------------------------------- */
-.faq-section {
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid var(--color-border);
-}
-
-.faq-item {
-  margin-bottom: 24px;
-  padding: 20px 24px;
-  background: var(--color-bg-alt);
-  border-radius: 12px;
-  border: 1px solid var(--color-border);
-}
-
-.faq-item h3,
-.faq-item strong {
-  color: var(--color-text);
-  font-size: 1rem;
-  margin-bottom: 8px;
-}
-
-.faq-item p {
-  color: var(--color-text-muted);
-  margin: 0;
 }
