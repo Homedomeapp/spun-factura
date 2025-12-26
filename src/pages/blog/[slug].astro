@@ -12,8 +12,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 
-// CRÍTICO: Obtener Content Y headings del render()
-// Los headings vienen con { depth, slug, text } si rehype-slug está configurado
+// Obtener Content, headings del render
 const { Content, headings } = await post.render();
 ---
 
@@ -28,6 +27,7 @@ const { Content, headings } = await post.render();
   image={post.data.image}
   imageAlt={post.data.imageAlt}
   headings={headings}
+  faq={post.data.faq}
 >
   <Content />
 </BlogPost>
