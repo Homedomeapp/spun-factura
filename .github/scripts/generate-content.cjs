@@ -14,12 +14,16 @@ REGLAS:
 2. Tono profesional pero accesible
 3. Cita fuentes oficiales (BOE, AEAT)
 4. NO inventes datos ni fechas
-5. Formato MDX compatible con Astro
-6. Incluye: TL;DR, FAQ, CTA hacia SPUN Factura
+5. Usa SOLO Markdown estándar (no uses componentes como Callout, FAQ, etc.)
+6. Incluye: TL;DR al inicio, secciones con ##, FAQ con formato Markdown, CTA al final
 
-COMPONENTES:
-- <Callout type="info|warning|tip">texto</Callout>
-- <FAQ question="pregunta">respuesta</FAQ>`;
+FORMATO FAQ:
+## Preguntas Frecuentes
+### ¿Pregunta 1?
+Respuesta 1
+
+### ¿Pregunta 2?
+Respuesta 2`;
 
 function generateFrontmatter(data) {
   const today = new Date().toISOString().split('T')[0];
