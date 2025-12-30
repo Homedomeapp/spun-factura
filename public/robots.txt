@@ -1,12 +1,19 @@
-# SPUN Factura - Robots.txt
-# https://factura.spun.es/robots.txt
+# robots.txt para factura.spun.es
+# Optimizado para SEO - Permite indexación completa
 
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemap location
 Sitemap: https://factura.spun.es/sitemap-index.xml
 
-# Bloquear páginas de prueba
-Disallow: /draft/
-Disallow: /test/
+# Permitir Googlebot-Image para favicon
+User-agent: Googlebot-Image
+Allow: /
+
+# Bloquear archivos innecesarios
+Disallow: /_astro/
+Disallow: /api/
+
+# Crawl-delay sugerido (opcional)
+# Crawl-delay: 1
