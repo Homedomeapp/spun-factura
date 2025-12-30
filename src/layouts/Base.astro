@@ -6,6 +6,60 @@ interface Props {
 
 const { title, description } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const siteURL = Astro.site || 'https://factura.spun.es';
+
+// Organization Schema - Para que Google muestre el logo en resultados
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${siteURL}/#organization`,
+  "name": "Spun Factura",
+  "alternateName": "Spun",
+  "url": siteURL,
+  "logo": {
+    "@type": "ImageObject",
+    "url": `${siteURL}/images/spun-logo-512.png`,
+    "width": 512,
+    "height": 512
+  },
+  "image": `${siteURL}/images/spun-logo-512.png`,
+  "description": "Software de facturación electrónica para profesionales de construcción y reformas. Cumplimiento Verifactu 2027.",
+  "foundingDate": "2024",
+  "founder": {
+    "@type": "Organization",
+    "name": "Homedome Ibérica S.L."
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Madrid",
+    "addressCountry": "ES"
+  },
+  "legalName": "Homedome Ibérica S.L.",
+  "taxID": "B88637574",
+  "sameAs": [
+    "https://www.spun.es",
+    "https://www.linkedin.com/company/spun-es"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "availableLanguage": ["Spanish"]
+  }
+};
+
+// WebSite Schema - Para sitelinks y búsqueda
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteURL}/#website`,
+  "url": siteURL,
+  "name": "Spun Factura",
+  "description": "Facturación electrónica para profesionales de construcción y reformas",
+  "publisher": {
+    "@id": `${siteURL}/#organization`
+  },
+  "inLanguage": "es-ES"
+};
 ---
 
 <!DOCTYPE html>
@@ -16,17 +70,49 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <title>{title}</title>
   <meta name="description" content={description}>
   <link rel="canonical" href={canonicalURL}>
-<!-- Favicon -->
+  
+  <!-- Favicon optimizado para Google (mínimo 48x48, recomendado múltiplos) -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   
+  <!-- Para Android/PWA -->
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#34CED6">
+  
+  <!-- Open Graph -->
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
   <meta property="og:type" content="website">
   <meta property="og:url" content={canonicalURL}>
-  <meta property="og:image" content={new URL('/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png', Astro.site)}>
+  <meta property="og:image" content={`${siteURL}/images/og-spun-factura.png`}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Spun Factura">
+  <meta property="og:locale" content="es_ES">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={`${siteURL}/images/og-spun-factura.png`}>
+  
+  <!-- SEO adicional -->
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="author" content="Spun">
+  <meta name="geo.region" content="ES-MD">
+  <meta name="geo.placename" content="Madrid">
+  
+  <!-- Schema.org - Organization (para logo en resultados) -->
+  <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+  
+  <!-- Schema.org - WebSite -->
+  <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,7 +159,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <header>
     <div class="container header-inner">
       <a href="/" class="logo">
-        <img src="/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" alt="SPUN">
+        <img src="/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" alt="Spun" width="32" height="32">
         <span class="logo-text">Factura</span>
       </a>
       <nav class="nav-links">
@@ -89,7 +175,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
   <footer>
     <div class="container">
-      <p class="footer-text">SPUN Factura · Homedome Ibérica S.L. · CIF B88637574 · Madrid</p>
+      <p class="footer-text">Spun Factura · Homedome Ibérica S.L. · CIF B88637574 · Madrid</p>
       <p class="footer-text" style="font-size: 0.7rem;">
         Información sobre Verifactu basada en el 
         <a href="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2023-24840" target="_blank" rel="noopener">RD 1007/2023</a> 

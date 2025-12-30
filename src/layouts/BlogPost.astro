@@ -68,10 +68,10 @@ const articleSchema = {
   "image": ogImage,
   "datePublished": new Date(publishedDate).toISOString(),
   "dateModified": updatedDate ? new Date(updatedDate).toISOString() : new Date(publishedDate).toISOString(),
-  "author": { "@type": "Organization", "name": "SPUN", "url": "https://spun.es" },
+  "author": { "@type": "Organization", "name": "Spun", "url": "https://spun.es" },
   "publisher": {
     "@type": "Organization",
-    "name": "SPUN Factura",
+    "name": "Spun Factura",
     "logo": { "@type": "ImageObject", "url": "https://factura.spun.es/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" }
   },
   "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalURL }
@@ -108,7 +108,7 @@ const faqSchema = faq && faq.length > 0 ? {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{title} | SPUN Factura</title>
+  <title>{title} | Spun Factura</title>
   <meta name="description" content={description}>
   <link rel="canonical" href={canonicalURL}>
   
@@ -149,7 +149,7 @@ const faqSchema = faq && faq.length > 0 ? {
   <header class="site-header">
     <div class="header-inner">
       <a href="/" class="logo">
-        <img src="/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" alt="SPUN" width="32" height="32">
+        <img src="/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" alt="Spun" width="32" height="32">
         <span class="logo-text">Factura</span>
       </a>
       <nav class="nav-links">
@@ -274,7 +274,7 @@ const faqSchema = faq && faq.length > 0 ? {
   </main>
 
   <footer class="site-footer">
-    <p>SPUN Factura · Homedome Ibérica S.L. · CIF B88637574 · Madrid</p>
+    <p>Spun Factura · Homedome Ibérica S.L. · CIF B88637574 · Madrid</p>
     <div class="footer-links">
       <a href="/privacidad">Privacidad</a>
       <a href="/aviso-legal">Aviso Legal</a>
