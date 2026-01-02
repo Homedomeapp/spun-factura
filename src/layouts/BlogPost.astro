@@ -653,6 +653,13 @@ const faqSchema = faq && faq.length > 0 ? {
     .article-content td:first-child,
     .article-content th:first-child {
       text-align: left;
+      min-width: 180px;
+    }
+    
+    /* Segunda columna corta (Sí/No, estados) */
+    .article-content td:nth-child(2),
+    .article-content th:nth-child(2) {
+      min-width: 100px;
     }
     
     /* Filas con totales/subtotales */
