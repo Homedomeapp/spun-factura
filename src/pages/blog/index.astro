@@ -104,14 +104,6 @@ function getReadingTime(content: string): number {
         <p class="blog-subtitle">Guías prácticas sobre facturación, fiscalidad y normativa para profesionales de construcción y reformas</p>
       </header>
       
-      <!-- Filtros de categoría (visual, las páginas se crean en siguiente iteración) -->
-      <nav class="blog-filters" aria-label="Filtrar por categoría">
-        <a href="/blog" class="filter-btn active">Todos</a>
-        <a href="/blog/categoria/verifactu" class="filter-btn">Verifactu</a>
-        <a href="/blog/categoria/fiscalidad" class="filter-btn">Fiscalidad</a>
-        <a href="/blog/categoria/autonomos" class="filter-btn">Autónomos</a>
-      </nav>
-      
       <!-- Grid de posts -->
       <div class="posts-grid">
         {posts.map((post, index) => (
