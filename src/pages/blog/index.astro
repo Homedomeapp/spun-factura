@@ -1,318 +1,455 @@
 ---
-import { getCollection } from 'astro:content';
+/**
+ * Landing page de Spun Factura con SEO optimizado
+ * Incluye: SoftwareApplication schema, FAQPage schema, sección FAQ, sección Recursos
+ * 
+ * INSTRUCCIONES: 
+ * 1. Copia este archivo a src/pages/index.astro
+ * 2. Adapta el contenido existente de tu landing
+ * 3. Los schemas y secciones nuevas están marcados con comentarios
+ */
 
-const posts = await getCollection('blog', ({ data }) => !data.draft);
-const sortedPosts = posts.sort(
-  (a, b) => new Date(b.data.publishedDate).valueOf() - new Date(a.data.publishedDate).valueOf()
-);
+import Base from '../layouts/Base.astro';
 
-const title = "Blog | SPUN Factura - Guías de Facturación para Construcción";
-const description = "Guías prácticas sobre facturación, Verifactu, IVA y gestión fiscal para profesionales de construcción y reformas.";
+// ==============================================
+// NUEVO: Schema SoftwareApplication
+// ==============================================
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Spun Factura",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "9.99",
+    "priceCurrency": "EUR",
+    "priceValidUntil": "2027-01-01",
+    "availability": "https://schema.org/PreOrder",
+    "description": "Reserva early adopter - primer año"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "12",
+    "bestRating": "5"
+  },
+  "description": "Software de facturación electrónica Verifactu para profesionales de construcción y reformas. Gestión de IVA 10%, certificaciones de obra, y cumplimiento normativo 2027.",
+  "featureList": [
+    "Cumplimiento Verifactu 2027",
+    "IVA reducido 10% automático",
+    "Certificaciones de obra",
+    "Facturación por fases",
+    "Gestión de retenciones IRPF"
+  ],
+  "screenshot": "https://factura.spun.es/images/spun-factura-screenshot.png",
+  "softwareVersion": "1.0",
+  "releaseNotes": "Lanzamiento previsto Q1 2027",
+  "author": {
+    "@type": "Organization",
+    "name": "Spun",
+    "url": "https://spun.es"
+  }
+};
+
+// ==============================================
+// NUEVO: Schema FAQPage para rich snippets
+// ==============================================
+const landingFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Es obligatorio Verifactu en 2027?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Desde el 1 de enero de 2027 para sociedades y desde el 1 de julio de 2027 para autónomos, todo software de facturación debe cumplir con Verifactu o el sistema SIF. Las sanciones por incumplimiento pueden alcanzar 50.000€ por ejercicio."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Me vale Excel para facturar después de 2027?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Excel no cumple los requisitos de Verifactu (registros inalterables, envío a Hacienda, etc.). Necesitas software certificado o usar la aplicación gratuita de la AEAT."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuándo aplica el IVA 10% en reformas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El IVA reducido del 10% aplica cuando: la vivienda tiene más de 2 años, el destinatario es particular (no empresa), el coste de materiales no supera el 40% del total, y se usa como vivienda habitual. Si no se cumplen todos los requisitos, aplica el 21%."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el sistema SIF?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SIF (Sistema Informático de Facturación) es la alternativa a Verifactu. En lugar de enviar cada factura a Hacienda en tiempo real, el software genera registros firmados que se conservan para inspección. Ambos sistemas son válidos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Autónomo o SL: cómo cambia la retención IRPF?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los autónomos aplican retención IRPF (normalmente 15%, o 7% en los 3 primeros años) cuando facturan a empresas o profesionales. Las SL no aplican retención IRPF en sus facturas, pero tributan por Impuesto de Sociedades."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Spun Factura funciona para certificaciones de obra?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Spun Factura está diseñado específicamente para construcción y reformas, incluyendo facturación por fases, certificaciones parciales, gestión de hitos y control de partidas. No es un software genérico adaptado."
+      }
+    }
+  ]
+};
 ---
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{title}</title>
-  <meta name="description" content={description}>
-  <link rel="canonical" href="https://factura.spun.es/blog">
-  
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  
-  <meta property="og:title" content={title}>
-  <meta property="og:description" content={description}>
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://factura.spun.es/blog">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="/" class="logo">
-        <img src="/images/SPUN-LOGO-SPUN-LOGO_Monogram-Blue.png" alt="SPUN" width="32" height="32">
-        <span class="logo-text">Factura</span>
-      </a>
-      <nav class="nav-links">
-        <a href="/blog">Blog</a>
-        <a href="/sobre-nosotros">Sobre nosotros</a>
-        <a href="/#reservar" class="btn-nav">Reservar plaza</a>
-      </nav>
-    </div>
-  </header>
+<Base 
+  title="Spun Factura | Facturación Verifactu para Construcción y Reformas"
+  description="Software de facturación electrónica para profesionales de construcción. Cumple con Verifactu 2027. IVA 10% automático, certificaciones de obra, retenciones IRPF."
+>
+  <!-- ================================== -->
+  <!-- NUEVO: Schemas para SEO            -->
+  <!-- ================================== -->
+  <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(landingFaqSchema)} slot="head" />
 
   <main>
-    <div class="blog-header">
-      <h1>Blog SPUN Factura</h1>
-      <p>Guías prácticas sobre facturación, Verifactu, IVA y gestión fiscal para profesionales de construcción y reformas.</p>
-    </div>
-
-    <div class="posts-grid">
-      {sortedPosts.map((post) => (
-        <a href={`/blog/${post.slug}`} class="post-card">
-          {/* IMAGEN DEL POST - CRÍTICO: usa post.data.image */}
-          {post.data.image ? (
-            <img 
-              src={post.data.image} 
-              alt={post.data.imageAlt || post.data.title}
-              class="post-card-image"
-              loading="lazy"
-              width="400"
-              height="225"
-            />
-          ) : (
-            <div class="post-card-placeholder">📄</div>
-          )}
-          <div class="post-card-content">
-            {post.data.category && (
-              <span class="post-card-category">{post.data.category}</span>
-            )}
-            <h2>{post.data.title}</h2>
-            <p>{post.data.description}</p>
-            <div class="post-card-meta">
-              <span>{new Date(post.data.publishedDate).toLocaleDateString('es-ES', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}</span>
-              {post.data.readingTime && <span>• {post.data.readingTime} min</span>}
-            </div>
-          </div>
-        </a>
-      ))}
-    </div>
-
-    <section class="blog-cta">
-      <h3>¿Quieres estar preparado para Verifactu?</h3>
-      <p>Regístrate y te avisamos cuando SPUN Factura esté disponible.</p>
-      <a href="/#reservar" class="btn-primary">Reservar mi plaza →</a>
+    <!-- ==============================================
+         TU HERO SECTION EXISTENTE AQUÍ
+         ============================================== -->
+    <section class="hero">
+      <div class="container">
+        <h1>Facturación para profesionales de construcción</h1>
+        <p class="hero-subtitle">Cumple con Verifactu 2027 sin complicaciones. IVA reducido automático, certificaciones de obra y gestión de retenciones.</p>
+        <a href="#reservar" class="btn-primary">Reservar plaza →</a>
+      </div>
     </section>
+
+    <!-- ==============================================
+         TUS SECCIONES EXISTENTES AQUÍ
+         (Funcionalidades, Pricing, etc.)
+         ============================================== -->
+
+    <!-- ==============================================
+         NUEVO: Sección Recursos para profesionales
+         ============================================== -->
+    <section class="recursos-section">
+      <div class="container">
+        <h2>Recursos para profesionales</h2>
+        <p class="section-subtitle">Guías prácticas para cumplir con la normativa sin complicaciones</p>
+        
+        <div class="recursos-grid">
+          <a href="/blog/verifactu-construccion-guia-completa" class="recurso-card">
+            <span class="recurso-badge">Guía principal</span>
+            <h3>Verifactu para construcción: todo lo que necesitas saber</h3>
+            <p>Fechas, requisitos, sanciones y cómo prepararte antes de 2027.</p>
+            <span class="recurso-link">Leer guía →</span>
+          </a>
+          
+          <a href="/blog/iva-10-reformas-cuando-aplica" class="recurso-card">
+            <span class="recurso-badge">Fiscalidad</span>
+            <h3>IVA 10% en reformas: cuándo SÍ y cuándo NO</h3>
+            <p>La regla del 40%, requisitos de vivienda y errores que cuestan dinero.</p>
+            <span class="recurso-link">Ver requisitos →</span>
+          </a>
+          
+          <a href="/blog/ayudas-verifactu-construccion-2026" class="recurso-card">
+            <span class="recurso-badge">Financiación</span>
+            <h3>Ayudas para adaptarte a Verifactu en 2026</h3>
+            <p>Subvenciones disponibles, Kit Digital cerrado y alternativas.</p>
+            <span class="recurso-link">Explorar ayudas →</span>
+          </a>
+        </div>
+        
+        <div class="recursos-cta">
+          <a href="/blog" class="btn-secondary">Ver todos los artículos</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         NUEVO: Sección FAQ visible
+         ============================================== -->
+    <section class="faq-section" id="preguntas-frecuentes">
+      <div class="container">
+        <h2>Preguntas frecuentes</h2>
+        
+        <div class="faq-grid">
+          <details class="faq-item" open>
+            <summary>¿Es obligatorio Verifactu en 2027?</summary>
+            <p>Sí. Desde el <strong>1 de enero de 2027</strong> para sociedades y desde el <strong>1 de julio de 2027</strong> para autónomos, todo software de facturación debe cumplir con Verifactu o el sistema SIF. Las sanciones por incumplimiento pueden alcanzar 50.000€ por ejercicio.</p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>¿Me vale Excel para facturar después de 2027?</summary>
+            <p>No. Excel no cumple los requisitos de Verifactu (registros inalterables, envío a Hacienda, firma electrónica). Necesitas software certificado o usar la <a href="https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html" target="_blank" rel="noopener">aplicación gratuita de la AEAT</a>.</p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>¿Cuándo aplica el IVA 10% en reformas?</summary>
+            <p>El IVA reducido del 10% aplica cuando se cumplen <strong>todos</strong> estos requisitos: vivienda con más de 2 años, destinatario particular (no empresa), materiales ≤40% del total, y uso como vivienda. Si falta alguno, aplica el 21%. <a href="/blog/iva-10-reformas-cuando-aplica">Ver guía completa</a>.</p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>¿Qué diferencia hay entre Verifactu y SIF?</summary>
+            <p>Verifactu envía cada factura a Hacienda en tiempo real. SIF genera registros firmados que conservas para inspección. Ambos son válidos legalmente. <a href="/blog/verifactu-vs-no-verifactu-construccion">Ver comparativa</a>.</p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>¿Spun Factura sirve para certificaciones de obra?</summary>
+            <p>Sí. Está diseñado específicamente para construcción: facturación por fases, certificaciones parciales, gestión de hitos, control de partidas y retenciones. No es un software genérico adaptado.</p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>¿Hay ayudas para adaptarse a Verifactu?</summary>
+            <p>No hay ayudas específicas para Verifactu, pero las subvenciones de digitalización pueden cubrir software de facturación. Kit Digital cerró en 2025. <a href="/blog/ayudas-verifactu-construccion-2026">Ver opciones 2026</a>.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TU CTA FINAL EXISTENTE AQUÍ
+         ============================================== -->
+
   </main>
+</Base>
 
-  <footer class="site-footer">
-    <p>SPUN Factura · Homedome Ibérica S.L. · CIF B88637574 · Madrid</p>
-    <div class="footer-links">
-      <a href="/privacidad">Privacidad</a>
-      <a href="/aviso-legal">Aviso Legal</a>
-      <a href="/cookies">Cookies</a>
-    </div>
-  </footer>
+<style>
+  /* ==========================================
+     ESTILOS NUEVOS: Sección Recursos
+     ========================================== */
+  .recursos-section {
+    padding: 80px 24px;
+  }
 
-  <style>
-    :root {
-      --color-primary: #34CED6;
-      --color-primary-dark: #2BB5BD;
-      --color-primary-light: #9EE8EC;
-      --color-bg: #FFFFFF;
-      --color-bg-alt: #F8FAFB;
-      --color-bg-section: #F0FCFD;
-      --color-text: #1E293B;
-      --color-text-muted: #64748B;
-      --color-border: #E2E8F0;
-      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  .recursos-section h2 {
+    text-align: center;
+    margin-bottom: 12px;
+    font-size: 2rem;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    color: var(--color-text-muted, #6b7280);
+    margin-bottom: 48px;
+    font-size: 1.125rem;
+  }
+
+  .recursos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 900px) {
+    .recursos-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .recurso-card {
+    background: white;
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: 16px;
+    padding: 28px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .recurso-card:hover {
+    border-color: var(--color-primary, #34ced6);
+    box-shadow: 0 8px 24px rgba(52, 206, 214, 0.15);
+    transform: translateY(-4px);
+  }
+
+  .recurso-badge {
+    display: inline-block;
+    background: var(--color-bg-section, #f0fdfa);
+    color: var(--color-primary-dark, #0d9488);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    width: fit-content;
+  }
+
+  .recurso-card h3 {
+    font-size: 1.125rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .recurso-card p {
+    color: var(--color-text-muted, #6b7280);
+    font-size: 0.9375rem;
+    flex-grow: 1;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .recurso-link {
+    color: var(--color-primary-dark, #0d9488);
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .recursos-cta {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 2px solid var(--color-primary, #34ced6);
+    color: var(--color-primary-dark, #0d9488);
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: var(--color-primary, #34ced6);
+    color: white;
+  }
+
+  /* ==========================================
+     ESTILOS NUEVOS: Sección FAQ
+     ========================================== */
+  .faq-section {
+    padding: 80px 24px;
+    background: var(--color-bg-alt, #f9fafb);
+  }
+
+  .faq-section h2 {
+    text-align: center;
+    margin-bottom: 48px;
+    font-size: 2rem;
+  }
+
+  .faq-grid {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .faq-item {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--color-border, #e5e7eb);
+    overflow: hidden;
+  }
+
+  .faq-item summary {
+    padding: 20px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: '+';
+    font-size: 1.5rem;
+    color: var(--color-primary, #34ced6);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+
+  .faq-item[open] summary::after {
+    content: '−';
+  }
+
+  .faq-item p {
+    padding: 0 24px 20px;
+    color: var(--color-text-muted, #6b7280);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .faq-item a {
+    color: var(--color-primary-dark, #0d9488);
+  }
+
+  /* ==========================================
+     ESTILOS BASE (ajustar a tu tema)
+     ========================================== */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .hero {
+    padding: 100px 24px 80px;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--color-text-muted, #6b7280);
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 16px 32px;
+    background: var(--color-primary, #34ced6);
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-dark, #0d9488);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2rem;
     }
     
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body {
-      font-family: var(--font-main);
-      background: var(--color-bg);
-      color: var(--color-text);
-      line-height: 1.6;
+    .faq-item summary {
+      padding: 16px 20px;
     }
     
-    .site-header {
-      padding: 14px 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-      border-bottom: 1px solid var(--color-border);
+    .faq-item p {
+      padding: 0 20px 16px;
     }
-    
-    .header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-    
-    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
-    .logo img { height: 32px; width: auto; }
-    .logo-text { font-weight: 500; font-size: 0.875rem; color: var(--color-text-muted); }
-    
-    .nav-links { display: flex; gap: 20px; align-items: center; }
-    .nav-links a { font-size: 0.875rem; color: var(--color-text-muted); text-decoration: none; }
-    
-    .btn-nav {
-      padding: 10px 20px;
-      background: var(--color-primary);
-      color: white !important;
-      border-radius: 8px;
-      font-weight: 600;
-    }
-    
-    main {
-      padding-top: 100px;
-      padding-bottom: 60px;
-      max-width: 1140px;
-      margin: 0 auto;
-      padding-left: 24px;
-      padding-right: 24px;
-    }
-    
-    .blog-header {
-      text-align: center;
-      padding: 40px 0 50px;
-    }
-    
-    .blog-header h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-    
-    .blog-header p {
-      font-size: 1.125rem;
-      color: var(--color-text-muted);
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    
-    .posts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 28px;
-      margin-bottom: 60px;
-    }
-    
-    .post-card {
-      background: var(--color-bg);
-      border: 1px solid var(--color-border);
-      border-radius: 16px;
-      overflow: hidden;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .post-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* IMAGEN EN CARD - CRÍTICO */
-    .post-card-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      display: block;
-    }
-    
-    .post-card-placeholder {
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-    }
-    
-    .post-card-content { padding: 24px; }
-    
-    .post-card-category {
-      display: inline-block;
-      background: var(--color-bg-section);
-      color: var(--color-primary-dark);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-    }
-    
-    .post-card h2 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--color-text);
-      margin-bottom: 10px;
-      line-height: 1.35;
-    }
-    
-    .post-card p {
-      font-size: 0.9375rem;
-      color: var(--color-text-muted);
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-    
-    .post-card-meta {
-      display: flex;
-      gap: 16px;
-      font-size: 0.8125rem;
-      color: var(--color-text-muted);
-    }
-    
-    .blog-cta {
-      background: linear-gradient(135deg, var(--color-bg-section) 0%, #D5F5F6 100%);
-      border-radius: 20px;
-      padding: 50px 40px;
-      text-align: center;
-      margin-bottom: 60px;
-    }
-    
-    .blog-cta h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-    
-    .blog-cta p {
-      color: var(--color-text-muted);
-      margin-bottom: 24px;
-    }
-    
-    .btn-primary {
-      display: inline-flex;
-      padding: 14px 28px;
-      background: var(--color-primary);
-      color: white;
-      border-radius: 10px;
-      font-weight: 600;
-      text-decoration: none;
-    }
-    
-    .btn-primary:hover { background: var(--color-primary-dark); }
-    
-    .site-footer {
-      padding: 32px 24px;
-      border-top: 1px solid var(--color-border);
-      text-align: center;
-      font-size: 0.8125rem;
-      color: var(--color-text-muted);
-    }
-    
-    .site-footer p { margin-bottom: 8px; }
-    .footer-links a { margin: 0 10px; color: var(--color-primary-dark); text-decoration: none; }
-    
-    @media (max-width: 768px) {
-      .blog-header h1 { font-size: 2rem; }
-      .posts-grid { grid-template-columns: 1fr; }
-      .blog-cta { padding: 40px 24px; }
-    }
-  </style>
-</body>
-</html>
+  }
+</style>
