@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    { "source": "/politica-de-privacidad", "destination": "/privacidad", "statusCode": 301 },
+    { "source": "/politica-de-cookies", "destination": "/cookies", "statusCode": 301 },
+    { "source": "/politica-privacidad", "destination": "/privacidad", "statusCode": 301 },
+    { "source": "/politica-cookies", "destination": "/cookies", "statusCode": 301 },
+    { "source": "/legal", "destination": "/aviso-legal", "statusCode": 301 }
+  ]
+}
